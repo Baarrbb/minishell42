@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 21:59:26 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 22:38:59 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 volatile sig_atomic_t	g_sigint_received = 0;
 
-void	handle_sigint(int sig) 
+void	handle_sigint(int sig)
 {
 	g_sigint_received = 2;
 	(void)sig;
@@ -32,6 +32,44 @@ void	handle_sigout(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+static char	*parse_home(char *pwd, char **env)
+{
+	char	*home;
+	char	*parse_pwd;
+
+	parse_pwd = 0;
+	home = 0;
+	home = get_ourenv("HOME=", env, home);
+	if (!home)
+		return (ft_strdup(pwd));
+	if (!ft_strncmp(pwd + 1, home, ft_strlen(home)))
+	{
+		parse_pwd = strjoin(parse_pwd, "~");
+		pwd += ft_strlen(home) + 1;
+		free(home);
+		if (!pwd)
+			return (parse_pwd);
+		parse_pwd = strjoin(parse_pwd, pwd);
+		return (parse_pwd);
+	}
+	else
+		return (free(home), ft_strdup(pwd));
+}
+
+static void	display_prompt(char **env)
+{
+	char	pwd[PATH_MAX];
+	char	*parse_pwd;
+
+	getcwd(pwd, PATH_MAX);
+	parse_pwd = parse_home(pwd, env);
+	printf("minishell: ");
+	printf(CYAN);
+	printf("%s", parse_pwd);
+	printf(RESET);
+	free(parse_pwd);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -58,7 +96,9 @@ int	main(int ac, char **av, char **envp)
 	{
 		sigaction(SIGINT, &sa, NULL);
 		signal(SIGQUIT, SIG_IGN);
-		line = readline("Minishell $ ");
+		display_prompt(cpy_env);
+		line = readline(" $ ");
+		// line = readline("Minishell $ ");
 		rl_on_new_line();
 		if (!line)
 			return (our_exit(pipe, cpy_env), 0);

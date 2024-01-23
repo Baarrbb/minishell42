@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:10:02 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 19:44:04 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 22:07:52 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@
 # include "parsing.h"
 # include "builtins.h"
 # include "exec.h"
+
+# define CYAN "\x1b[36m"
+# define RESET "\x1b[0m"
 
 #endif
