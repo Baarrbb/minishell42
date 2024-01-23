@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:59:03 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 21:46:09 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	builtingo(t_cmd *cmd, char ***env)
 	if (!ft_strncmp(cmd->cmd[0], "echo", ft_strlen("echo")))
 		our_echo(cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen("cd")))
-		cmd->builtin = 1;
+		our_cd(cmd, env);
 	else if (!ft_strncmp(cmd->cmd[0], "pwd", ft_strlen("pwd")))
 		our_pwd();
 	else if (!ft_strncmp(cmd->cmd[0], "export", ft_strlen("export")))
@@ -49,7 +49,7 @@ void	builtingo(t_cmd *cmd, char ***env)
 	else if (!ft_strncmp(cmd->cmd[0], "unset", ft_strlen("unset")))
 		our_unset(cmd->cmd, *env);
 	else if (!ft_strncmp(cmd->cmd[0], "env", ft_strlen("env")))
-		cmd->builtin = 1;
+		our_env(*env);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
 		our_exit(cmd, *env);
 	dup2(fdoutsave, 1);

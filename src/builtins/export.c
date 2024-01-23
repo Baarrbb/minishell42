@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/19 15:53:28 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 21:45:25 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ static void	print_export_alpha(char **env)
 	free_char_tab(sort);
 }
 
-static void	put_var(char ***env, char *var)
+void	put_var(char ***env, char *var)
 {
 	char	**tmp;
 	char	**new;
 	int		i;
 
 	tmp = *env;
-	new = ft_calloc(get_size(tmp) + 3, sizeof(char *));
+	new = ft_calloc(get_size(tmp) + 2, sizeof(char *));
 	if (!new)
 		return ;
 	i = -1;

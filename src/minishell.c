@@ -6,17 +6,17 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 19:56:38 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 21:59:26 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t sigint_received = 0;
+volatile sig_atomic_t	g_sigint_received = 0;
 
-void handle_sigint(int sig) 
+void	handle_sigint(int sig) 
 {
-	sigint_received = 2;
+	g_sigint_received = 2;
 	(void)sig;
 	write(1, "\n", 1);
 	rl_on_new_line();
@@ -26,7 +26,7 @@ void handle_sigint(int sig)
 
 void	handle_sigout(int sig)
 {
-	sigint_received = 1;
+	g_sigint_received = 1;
 	(void)sig;
 	write(1, "\n", 1);
 	rl_on_new_line();
@@ -46,6 +46,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	pipe = 0;
+	sortie = 2;
 	cpy_env = copy_env(envp);
 	sb.sa_handler = handle_sigout;
 	sb.sa_flags = 0;
@@ -63,10 +64,10 @@ int	main(int ac, char **av, char **envp)
 			return (our_exit(pipe, cpy_env), 0);
 		if (line[0] != ' ' && line[0] != 0)
 			add_history(line);
-		if (sigint_received == 2)
+		if (g_sigint_received == 2)
 		{
 			sortie = 130;
-			sigint_received = 0;
+			g_sigint_received = 0;
 		}
 		check_line(line, &pipe, cpy_env);
 		if (pipe)

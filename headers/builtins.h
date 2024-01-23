@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:14:03 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 19:57:18 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 21:46:15 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@
 void	our_echo(char **cmds_args);
 
 /*  CD_C  */
-void	our_cd(t_cmd *cmd, char **env);
+void	our_cd(t_cmd *cmd, char ***env);
 
 /* PWD_C */
 void	our_pwd(void);
 
 /* EXPORT_C */
+void	put_var(char ***env, char *var);
 void	our_export(t_cmd *cmd, char ***env);
 
 /* UNSET_C */
