@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:14:03 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 19:39:28 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 19:57:18 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ void	our_unset(char **cmds, char **copy_env);
 void	our_env(char **env);
 
 /* EXIT_C */
-void	our_exit(t_cmd *everything);
+void	our_exit(t_cmd *everything, char **env);
 
 #endif

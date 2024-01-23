@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:24:10 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/23 19:59:03 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ void	our_pwd(void)
 		printf("getcwd() error");
 }
 
-void	our_exit(t_cmd *everything)
+void	our_exit(t_cmd *everything, char **env)
 {
+	free_list(&everything);
+	free_char_tab(env);
 	exit(EXIT_SUCCESS);
 }
 
@@ -49,6 +51,6 @@ void	builtingo(t_cmd *cmd, char ***env)
 	else if (!ft_strncmp(cmd->cmd[0], "env", ft_strlen("env")))
 		cmd->builtin = 1;
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
-		our_exit(cmd);
+		our_exit(cmd, *env);
 	dup2(fdoutsave, 1);
 }
