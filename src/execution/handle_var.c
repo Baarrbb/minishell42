@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:54:21 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:42:36 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 18:18:34 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ static char	*replace_dollar(char *str, int pos, char **our_envp, char *sortie)
 	variable = ft_substr(str, (pos + 1), (i - pos - 1));
 	variable = strjoin(variable, "=");
 	result = get_ourenv(variable, our_envp, sortie);
-	printf("result when $ : %s, %s\n", result, variable);
 	if (result != NULL)
 		str = replace_by_env(str, result, (i - pos), ft_strlen(result));
 	else
@@ -129,5 +128,5 @@ int	handle_var(t_cmd *cmd, char **our_envp, char *sortie)
 				j++;
 		}
 	}
-	return (1); // error malloc bon code return 1
+	return (1);
 }

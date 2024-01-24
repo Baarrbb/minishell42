@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 21:46:09 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 18:05:30 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,6 @@ void	builtingo(t_cmd *cmd, char ***env)
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
 		our_exit(cmd, *env);
 	dup2(fdoutsave, 1);
+	close(fdoutsave);
+	close(fdinsave);
 }

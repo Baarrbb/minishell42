@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:54:00 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:42:31 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 18:19:27 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_ourenv(char *tofind, char **ourenv, char *sortie)
 		while (ourenv[i])
 		{
 			if (ft_strncmp(ourenv[i], tofind, ft_strlen(tofind)) == 0)
-				return (ft_strdup(&ourenv[i][ft_strlen(tofind) + 1]));
+				return (ft_strdup(&ourenv[i][ft_strlen(tofind)]));
 			i++;
 		}
 	}

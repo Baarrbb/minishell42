@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 19:40:10 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:42:38 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 18:00:46 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	reading_heredoc(int *pipeheredoc, char *delimiter)
 		line = readline("testheredoc : ");
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 		{
-			if (delimiter[ft_strlen(delimiter)] == '\0')
+			if (line[ft_strlen(delimiter)] == '\0')
 			{
 				free(line);
 				break ;

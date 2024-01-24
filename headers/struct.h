@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:03:51 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 19:44:56 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 18:07:18 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_cmd
 	int				builtin;
 	char			*path_cmd;
 	int				exit_val;
-	int				*quote_cmd;
 	t_redir			*redir;
 	struct s_cmd	*next;
 }	t_cmd;

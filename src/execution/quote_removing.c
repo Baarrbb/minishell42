@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 19:12:54 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:42:44 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 18:10:59 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,6 @@ static void	get_arg(t_cmd *cmd, char *arg, char c, int i)
 	}
 	free(cmd->cmd[i]);
 	cmd->cmd[i] = new;
-}
-
-static void	quote_cmd_filling(t_cmd *quoting)
-{
-	int	i;
-
-	i = 0;
-	while (quoting->cmd[i])
-	{
-		if (quoting->cmd[i][0] == '\'')
-			quoting->quote_cmd[i] = 1;
-		else if (quoting->cmd[i][0] == '\"')
-			quoting->quote_cmd[i] = 2;
-		else
-			quoting->quote_cmd[i] = 0;
-		i++;
-	}
 }
 
 static void	remove_quotes(t_cmd *cmd)
@@ -93,11 +76,7 @@ int	handle_quoting(t_cmd *quoting, char **env, int sortie)
 		{
 			while (quoting->cmd[i])
 				i++;
-			quoting->quote_cmd = malloc(i * sizeof(int));
-			if (quoting->quote_cmd == NULL)
-				return (0);
 			str_sortie = ft_itoa(sortie);
-			quote_cmd_filling(quoting);
 			if (handle_var(quoting, env, str_sortie) == 0)
 				return (0);
 			free(str_sortie);

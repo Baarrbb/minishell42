@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:42:29 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 17:59:00 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,50 @@
 
 static t_exec	*fill_struct_exec(t_cmd *command)
 {
-	t_exec	*yipi;
+	t_exec	*data;
 
-	yipi = malloc(1 * sizeof(t_exec));
-	if (yipi == NULL)
+	data = malloc(1 * sizeof(t_exec));
+	if (data == NULL)
 		return (0);
-	yipi->index = 0;
-	yipi->numpipes = numbers_pipe(command);
-	yipi->pid = malloc((yipi->numpipes + 1) * sizeof(pid_t));
-	if (yipi->pid == NULL)
+	data->index = 0;
+	data->numpipes = numbers_pipe(command);
+	data->pid = malloc((data->numpipes + 1) * sizeof(pid_t));
+	if (data->pid == NULL)
 	{
-		free(yipi);
+		free(data);
 		return (0);
 	}
-	yipi->pid[yipi->numpipes] = '\0';
-	yipi->pipefds = malloc(((yipi->numpipes * 2)) * sizeof(int));
-	if (yipi->pipefds == NULL)
+	data->pid[data->numpipes] = '\0';
+	data->pipefds = malloc(((data->numpipes * 2)) * sizeof(int));
+	if (data->pipefds == NULL)
 	{
-		free(yipi->pid);
-		free(yipi);
+		free(data->pid);
+		free(data);
 		return (0);
 	}
-	yipi->pipeindex = 0;
-	creation_pipes(yipi);
-	return (yipi);
+	data->pipeindex = 0;
+	creation_pipes(data);
+	return (data);
 }
 
-static void	free_struct_exec(t_exec *yipi)
+static void	free_struct_exec(t_exec *data)
 {
-	free(yipi->pipefds);
-	free(yipi->pid);
-	free(yipi);
+	free(data->pipefds);
+	free(data->pid);
+	free(data);
 }
 
-static void	exec(t_cmd *command, t_exec *yipi, char **envp)
+static void	exec(t_cmd *command, t_exec *data, char **envp)
 {
-	yipi->pid[yipi->index] = fork();
-	if (yipi->pid[yipi->index] == 0)
+	data->pid[data->index] = fork();
+	if (data->pid[data->index] == 0)
 	{
 		sig_default();
-		redirections_pipe_in(command, yipi);
+		redirections_pipe_in(command, data);
 		redirections_out(command);
-		redirections_pipe_out(yipi);
+		redirections_pipe_out(data);
 		redirections_in(command);
-		close_all_pipes(yipi->numpipes, yipi->pipefds);
+		close_all_pipes(data->numpipes, data->pipefds);
 		error_managing(command);
 		if (execve(command->path_cmd, command->cmd, envp) < 0)
 		{
@@ -65,45 +65,45 @@ static void	exec(t_cmd *command, t_exec *yipi, char **envp)
 			exit(127);
 		}
 	}
-	else if (yipi->pid[yipi->index] < 0)
+	else if (data->pid[data->index] < 0)
 	{
 		perror("dup2 error to do");
 		exit(EXIT_FAILURE);
 	}
 }
 
-static int	handle_waitpid(t_cmd *pipe, t_exec *yipi)
+static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 {
 	int	status;
 	int	wait_result;
 
 	status = 0;
 	wait_result = 0;
-	yipi->index = 0;
-	while (yipi->index < yipi->numpipes)
+	data->index = 0;
+	while (data->index < data->numpipes)
 	{
-		wait_result = waitpid(yipi->pid[yipi->index], &status, 0);
+		wait_result = waitpid(data->pid[data->index], &status, 0);
 		if (wait_result == -1)
 		{
 			perror("waitpid error");
 			break ;
 		}
 		pipe->exit_val = wait_result;
-		yipi->index++;
+		data->index++;
 	}
 	return (status);
 }
 
 int	execute_test(t_cmd *pipe, char ***envp)
 {
-	t_exec	*yipi;
+	t_exec	*data;
 	t_cmd	*command;
 	int		status;
 
 	command = (t_cmd *)pipe;
 	status = 0;
-	yipi = fill_struct_exec(command);
-	if (yipi == NULL)
+	data = fill_struct_exec(command);
+	if (data == NULL)
 		return (-1);
 	while (command)
 	{
@@ -111,14 +111,14 @@ int	execute_test(t_cmd *pipe, char ***envp)
 		if (command->builtin)
 			builtingo(command, envp);
 		else
-			exec(command, yipi, *envp);
+			exec(command, data, *envp);
 		command = command->next;
-		yipi->pipeindex += 2;
-		yipi->index++;
+		data->pipeindex += 2;
+		data->index++;
 	}
-	close_all_pipes(yipi->numpipes, yipi->pipefds);
-	status = handle_waitpid(pipe, yipi);
+	close_all_pipes(data->numpipes, data->pipefds);
+	status = handle_waitpid(pipe, data);
 	printtestsignals(status);
-	free_struct_exec(yipi);
+	free_struct_exec(data);
 	return (WEXITSTATUS(status));
 }
