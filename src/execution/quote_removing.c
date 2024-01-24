@@ -43,7 +43,6 @@ static void	quote_cmd_filling(t_cmd *quoting)
 	int	i;
 
 	i = 0;
-	printf("filling\n");
 	while (quoting->cmd[i])
 	{
 		if (quoting->cmd[i][0] == '\'')

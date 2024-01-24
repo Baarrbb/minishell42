@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	redirections_pipe_out(t_cmd *command, t_exec *data)
+void	redirections_pipe_in(t_cmd *command, t_exec *data)
 {
 	if (command->next)
 	{
@@ -52,7 +52,7 @@ void	redirections_in(t_cmd *cmd)
 	}
 }
 
-void	redirections_pipe_in(t_exec *data)
+void	redirections_pipe_out(t_exec *data)
 {
 	if (data->index != 0)
 	{
@@ -84,8 +84,8 @@ int	redirections_out(t_cmd *cmd)
 			cmd->redir = cmd->redir->next;
 		}
 		dup2(fd, 1);
-		//if (fd > 2)
-			//close(fd);
+		if (fd > 2)
+			close(fd);
 		cmd->redir = oldredir;
 		return (fd);
 	}

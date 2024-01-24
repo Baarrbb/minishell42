@@ -31,6 +31,8 @@ void	ft_lstadd_back_bis(t_cmd **lst, t_cmd *new)
 {
 	t_cmd	*tmp;
 
+	if (new == NULL)
+		return ;
 	if (*lst == NULL)
 	{
 		*lst = new;

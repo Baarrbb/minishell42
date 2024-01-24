@@ -53,9 +53,9 @@ static void	exec(t_cmd *command, t_exec *yipi, char **envp)
 	if (yipi->pid[yipi->index] == 0)
 	{
 		sig_default();
-		redirections_pipe_out(command, yipi);
+		redirections_pipe_in(command, yipi);
 		redirections_out(command);
-		redirections_pipe_in(yipi);
+		redirections_pipe_out(yipi);
 		redirections_in(command);
 		close_all_pipes(yipi->numpipes, yipi->pipefds);
 		error_managing(command);

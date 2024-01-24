@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 22:38:59 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 17:12:39 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,22 @@ static char	*parse_home(char *pwd, char **env)
 		return (free(home), ft_strdup(pwd));
 }
 
-static void	display_prompt(char **env)
+static char	*display_prompt(char **env)
 {
 	char	pwd[PATH_MAX];
 	char	*parse_pwd;
+	char	*prompt;
 
+	prompt = 0;
 	getcwd(pwd, PATH_MAX);
 	parse_pwd = parse_home(pwd, env);
-	printf("minishell: ");
-	printf(CYAN);
-	printf("%s", parse_pwd);
-	printf(RESET);
+	prompt = strjoin(prompt, "minishell: ");
+	prompt = strjoin(prompt, CYAN);
+	prompt = strjoin(prompt, parse_pwd);
 	free(parse_pwd);
+	prompt = strjoin(prompt, RESET);
+	prompt = strjoin(prompt, " $ ");
+	return (prompt);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -77,6 +81,7 @@ int	main(int ac, char **av, char **envp)
 	char				*line;
 	t_cmd				*pipe;
 	char				**cpy_env;
+	char				*prompt;
 	struct sigaction	sa;
 	struct sigaction	sb;
 	int					sortie;
@@ -96,9 +101,8 @@ int	main(int ac, char **av, char **envp)
 	{
 		sigaction(SIGINT, &sa, NULL);
 		signal(SIGQUIT, SIG_IGN);
-		display_prompt(cpy_env);
-		line = readline(" $ ");
-		// line = readline("Minishell $ ");
+		prompt = display_prompt(cpy_env);
+		line = readline(prompt);
 		rl_on_new_line();
 		if (!line)
 			return (our_exit(pipe, cpy_env), 0);

@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:01:53 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/19 19:03:52 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/24 16:52:51 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ void	fill_struct(t_cmd **pipe, char **args, char **envp)
 	{
 		tmp->path = get_path(envp);
 		is_builtin(tmp);
-		tmp->path_cmd = check_exist_cmd(tmp->cmd[0], tmp);
+		if (tmp->cmd)
+			tmp->path_cmd = check_exist_cmd(tmp->cmd[0], tmp);
 		tmp = tmp->next;
 	}
 	free_char_tab(args);
