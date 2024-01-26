@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:02:42 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/23 19:42:23 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/26 16:53:56 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static void	command_not_found(t_cmd *command)
 
 void	error_managing(t_cmd *command)
 {
+	if (command->cmd == NULL)
+		exit(1);
 	no_cmd_slash(command);
 	is_a_directory(command);
 	no_such_file_or_directory(command);

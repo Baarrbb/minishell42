@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/24 18:05:30 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/26 17:08:49 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	our_exit(t_cmd *everything, char **env)
 	exit(EXIT_SUCCESS);
 }
 
-void	builtingo(t_cmd *cmd, char ***env)
+void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 {
 	int	fdinsave;
 	int	fdoutsave;
@@ -37,7 +37,7 @@ void	builtingo(t_cmd *cmd, char ***env)
 	fdinsave = dup(0);
 	fdoutsave = dup(1);
 	redirections_out(cmd);
-	redirections_in(cmd);
+	redirections_in(cmd, data);
 	if (!ft_strncmp(cmd->cmd[0], "echo", ft_strlen("echo")))
 		our_echo(cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen("cd")))

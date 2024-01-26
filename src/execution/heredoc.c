@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 19:40:10 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/24 18:00:46 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/26 17:09:34 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	reading_heredoc(int *pipeheredoc, char *delimiter)
 	exit(0);
 }
 
-int	heredoc(t_cmd *test)
+int	heredoc(t_cmd *test, t_exec *data)
 {
 	int		pipeheredoc[2];
 	char	*delimiter;
@@ -51,11 +51,14 @@ int	heredoc(t_cmd *test)
 	}
 	pid = fork();
 	if (pid == 0)
+	{
+		close_all_pipes(data->numpipes, data->pipefds);
 		reading_heredoc(pipeheredoc, delimiter);
+	}
 	if (pid > 0)
 	{
-		waitpid(pid, &status, 0);
 		close(pipeheredoc[1]);
+		waitpid(pid, &status, 0);
 		return (pipeheredoc[0]);
 	}
 	return (0);

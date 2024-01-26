@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/24 17:59:00 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/01/26 17:09:21 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,12 @@ static void	exec(t_cmd *command, t_exec *data, char **envp)
 	{
 		sig_default();
 		redirections_pipe_in(command, data);
+		redirections_in(command, data);
 		redirections_out(command);
 		redirections_pipe_out(data);
-		redirections_in(command);
+		printf("test\n\n\n");
 		close_all_pipes(data->numpipes, data->pipefds);
+		free_struct_exec(data);
 		error_managing(command);
 		if (execve(command->path_cmd, command->cmd, envp) < 0)
 		{
@@ -109,7 +111,7 @@ int	execute_test(t_cmd *pipe, char ***envp)
 	{
 		sig_ignore();
 		if (command->builtin)
-			builtingo(command, envp);
+			builtingo(command, envp, data);
 		else
 			exec(command, data, *envp);
 		command = command->next;
