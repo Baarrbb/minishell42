@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:02:42 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/26 16:53:56 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:10:07 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	no_cmd_slash(t_cmd *command)
 	{
 		errno = ENOENT;
 		perror(command->cmd[0]);
+		free_list(&command);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -65,7 +66,10 @@ static void	command_not_found(t_cmd *command)
 void	error_managing(t_cmd *command)
 {
 	if (command->cmd == NULL)
+	{
+		free_list(&command);
 		exit(1);
+	}
 	no_cmd_slash(command);
 	is_a_directory(command);
 	no_such_file_or_directory(command);

@@ -6,7 +6,7 @@
 /*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/24 17:12:39 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/02/05 20:14:03 by bsuc             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,10 @@ int	main(int ac, char **av, char **envp)
 			sortie = 130;
 			g_sigint_received = 0;
 		}
+		
 		check_line(line, &pipe, cpy_env);
+		printf("lskdjlksjdl\n\n\n\n");
+		print_linked_list(pipe);
 		if (pipe)
 		{
 			if (handle_quoting(pipe, cpy_env, sortie) == 0)
