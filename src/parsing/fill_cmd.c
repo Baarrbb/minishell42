@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:05:13 by bsuc              #+#    #+#             */
-/*   Updated: 2024/02/25 17:02:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/25 17:25:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,8 @@ static int	fill_cmd_cmd(t_cmd **cmd, t_cmd ***pipe, char **args, int i)
 	{
 		while ((*cmd)->cmd[++j])
 			i++;
-	}
-
 		ft_lstadd_back_bis(*pipe, *cmd);
+	}
 	return (i);
 }
 
@@ -92,7 +91,6 @@ void	fill_cmd(t_cmd **pipe, char **args)
 	while (args[i] && ft_strncmp(args[i], "|", ft_strlen(args[i])))
 	{
 		i += is_redir(&cmd, args, i);
-		print_struct(cmd);
 		if (!cmd->cmd)
 			i = fill_cmd_cmd(&cmd, &pipe, args, i);
 		else if (cmd->cmd)
@@ -103,7 +101,8 @@ void	fill_cmd(t_cmd **pipe, char **args)
 				i++;
 		}
 	}
+	if (!args[i] && !cmd->cmd)
+		ft_lstadd_back_bis(pipe, cmd);
 	if (args[i] && !ft_strncmp(args[i], "|", ft_strlen(args[i])))
 		fill_cmd(pipe, &args[i + 1]);
-	// print_linked_list(*pipe);
 }

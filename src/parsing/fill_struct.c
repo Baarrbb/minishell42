@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:01:53 by bsuc              #+#    #+#             */
-/*   Updated: 2024/02/25 16:48:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/25 17:27:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	fill_struct(t_cmd **pipe, char **args, char **envp)
 	t_cmd	*tmp;
 
 	fill_cmd(pipe, args);
-	printf("BLOQUE ??\n\n");
 	tmp = *pipe;
 	while (tmp)
 	{

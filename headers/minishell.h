@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:10:02 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 22:07:52 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/02/25 17:34:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <assert.h>
-# include "libft.h"
+# include "../libft/libft.h"
 # include "struct.h"
 # include "parsing.h"
 # include "builtins.h"

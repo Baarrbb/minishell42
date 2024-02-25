@@ -6,9 +6,11 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/29 23:25:19 by bsuc              #+#    #+#              #
-#    Updated: 2024/02/25 16:45:25 by marvin           ###   ########.fr        #
+#    Updated: 2024/02/25 17:45:54 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+OBJ_DIR = src/obj
 
 SRC_DIR = src
 PARS_DIR = $(SRC_DIR)/parsing
@@ -18,7 +20,7 @@ BUIL_DIR = $(SRC_DIR)/builtins
 SRC_MAIN = $(SRC_DIR)/minishell.c \
 	$(SRC_DIR)/copy_envp.c \
 	$(SRC_DIR)/sanitize.c \
-	$(SRC_DIR)/print.c # to remove
+	$(SRC_DIR)/print.c
 
 SRC_PARS = $(PARS_DIR)/check_syntax.c \
 	$(PARS_DIR)/fill_cmd.c \
@@ -51,9 +53,9 @@ SRC = $(SRC_MAIN) \
 	$(SRC_BUIL) \
 	$(SRC_EXEC)
 
-OBJ = $(SRC:.c=.o)
+OBJ =  $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.c=.o)))
 NAME = minishell
-RM = rm -f
+RM = rm -rf
 CC = cc
 CFLAGS = -Wall -Wextra  -g #-Werror
 LIBFT = libft/libft.a
@@ -61,10 +63,22 @@ INC = -I./headers
 
 all : $(NAME)
 
-$(NAME) : $(LIBFT) $(OBJ)
+$(NAME) : $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 
-%.o: %.c
+$(OBJ_DIR) :
+	mkdir -p $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(PARS_DIR)/%.c
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(EXEC_DIR)/%.c
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(BUIL_DIR)/%.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(LIBFT) :
@@ -72,7 +86,7 @@ $(LIBFT) :
 
 clean :
 	make -C libft clean
-	$(RM) $(OBJ)
+	$(RM) $(OBJ_DIR)
 
 fclean : clean
 	make -C libft fclean
