@@ -6,11 +6,9 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/29 23:25:19 by bsuc              #+#    #+#              #
-#    Updated: 2024/02/25 17:45:54 by marvin           ###   ########.fr        #
+#    Updated: 2024/02/25 17:58:51 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-OBJ_DIR = src/obj
 
 SRC_DIR = src
 PARS_DIR = $(SRC_DIR)/parsing
@@ -53,7 +51,9 @@ SRC = $(SRC_MAIN) \
 	$(SRC_BUIL) \
 	$(SRC_EXEC)
 
+OBJ_DIR = src/obj
 OBJ =  $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.c=.o)))
+
 NAME = minishell
 RM = rm -rf
 CC = cc
