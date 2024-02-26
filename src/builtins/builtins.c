@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/02/25 16:39:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/26 18:11:59 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,17 @@ void	our_pwd(void)
 
 void	our_exit(t_cmd *everything, char **env)
 {
-	free_list(&everything);
-	free_char_tab(env);
-	exit(EXIT_SUCCESS);
+	int	status;
+
+	status = EXIT_SUCCESS;
+	if (everything->cmd[1])
+		status = ft_atoi(everything->cmd[1]) % 256;
+	if (everything->cmd[2])
+		printf("exit\nbash: exit: too many arguments");
+	else
+		free_list(&everything);
+		free_char_tab(env);
+		exit(status);
 }
 
 void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
