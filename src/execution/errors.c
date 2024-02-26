@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:02:42 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/02/05 20:10:07 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/02/26 16:13:03 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,26 @@ static void	no_such_file_or_directory(t_cmd *command)
 
 static void	command_not_found(t_cmd *command)
 {
+	int		i;
+	char	*full_cmd;
+
+	full_cmd = 0;
+	i = -1;
+	while (command->path[++i])
+	{
+		full_cmd = strjoin(full_cmd, command->path[i]);
+		full_cmd = strjoin(full_cmd, "/");
+		full_cmd = strjoin(full_cmd, command->cmd[0]);
+		if (access(full_cmd, X_OK) == 0)
+		{
+			command->path_cmd = full_cmd;
+			break ;
+		}
+		free(full_cmd);
+		full_cmd = 0;
+	}
 	if (!command->path_cmd)
 	{
-		printf("l46errors\n");
 		ft_putstr_fd(command->cmd[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		free_list(&command);
