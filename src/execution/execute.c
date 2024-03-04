@@ -6,11 +6,28 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/26 17:09:21 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/04 14:45:11 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	fill_builtins(t_exec *data, t_cmd *command)
+{
+	int	i;
+
+	i = 0;
+	data->builtin = malloc((data->numpipes) * sizeof(int));
+	while (command)
+	{
+		if (command->builtin == 1)
+			data->builtin[i] = 1;
+		else
+			data->builtin[i] = 0;
+		command = command->next;
+		i++;
+	}
+}
 
 static t_exec	*fill_struct_exec(t_cmd *command)
 {
@@ -28,6 +45,7 @@ static t_exec	*fill_struct_exec(t_cmd *command)
 		return (0);
 	}
 	data->pid[data->numpipes] = '\0';
+	fill_builtins(data, command);
 	data->pipefds = malloc(((data->numpipes * 2)) * sizeof(int));
 	if (data->pipefds == NULL)
 	{
@@ -57,7 +75,6 @@ static void	exec(t_cmd *command, t_exec *data, char **envp)
 		redirections_in(command, data);
 		redirections_out(command);
 		redirections_pipe_out(data);
-		printf("test\n\n\n");
 		close_all_pipes(data->numpipes, data->pipefds);
 		free_struct_exec(data);
 		error_managing(command);
@@ -83,8 +100,9 @@ static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 	wait_result = 0;
 	data->index = 0;
 	while (data->index < data->numpipes)
-	{
-		wait_result = waitpid(data->pid[data->index], &status, 0);
+	{ 
+		if (data->builtin[data->index] == 0)
+			wait_result = waitpid(data->pid[data->index], &status, 0);
 		if (wait_result == -1)
 		{
 			perror("waitpid error");
@@ -93,6 +111,7 @@ static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 		pipe->exit_val = wait_result;
 		data->index++;
 	}
+	printf("WHAT\n");
 	return (status);
 }
 

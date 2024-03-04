@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:03:51 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/24 18:07:18 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/04 14:33:52 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_exec
 	int		numpipes;
 	int		index;
 	pid_t	*pid;
+	int		*builtin;
 	int		*pipefds;
 	int		fd;
 	int		pipeindex;

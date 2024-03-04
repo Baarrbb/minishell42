@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/02/25 17:15:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/04 16:51:35 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ int	main(int ac, char **av, char **envp)
 	struct sigaction	sb;
 	int					sortie;
 
-	(void)ac;
 	(void)av;
+	if (ac != 1)
+		return (0);
 	pipe = 0;
 	sortie = 2;
 	cpy_env = copy_env(envp);

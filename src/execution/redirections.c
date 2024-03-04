@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:27:29 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/26 17:05:07 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/04 13:49:03 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	redirections_in(t_cmd *cmd, t_exec *data)
 
 void	redirections_pipe_out(t_exec *data)
 {
+	
 	if (data->index != 0)
 	{
 		if (dup2(data->pipefds[data->pipeindex - 2], 0) < 0)
@@ -61,6 +62,7 @@ void	redirections_pipe_out(t_exec *data)
 			perror("dup2 error to do");
 			exit(EXIT_FAILURE);
 		}
+		printf("pipeoutbuiltin");	
 	}
 }
 

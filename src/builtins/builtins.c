@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/02/26 18:11:59 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/04 14:34:00 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 
 	fdinsave = dup(0);
 	fdoutsave = dup(1);
-	redirections_out(cmd);
+	redirections_pipe_in(cmd, data);
 	redirections_in(cmd, data);
+	redirections_out(cmd);
+	redirections_pipe_out(data);
 	if (!ft_strncmp(cmd->cmd[0], "echo", ft_strlen("echo")))
 		our_echo(cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen("cd")))
@@ -61,6 +63,7 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
 		our_exit(cmd, *env);
 	dup2(fdoutsave, 1);
-	close(fdoutsave);
-	close(fdinsave);
+	dup2(fdinsave, 0);
+	//close(fdoutsave);
+	//close(fdinsave);
 }
