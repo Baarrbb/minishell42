@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/04 14:45:11 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/21 10:47:44 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,11 @@ static void	exec(t_cmd *command, t_exec *data, char **envp)
 		redirections_pipe_in(command, data);
 		redirections_in(command, data);
 		redirections_out(command);
+		printf("test\n");
 		redirections_pipe_out(data);
 		close_all_pipes(data->numpipes, data->pipefds);
 		free_struct_exec(data);
+		//close(0);
 		error_managing(command);
 		if (execve(command->path_cmd, command->cmd, envp) < 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/04 14:34:00 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/21 10:37:27 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ void	our_exit(t_cmd *everything, char **env)
 	if (everything->cmd[2])
 		printf("exit\nbash: exit: too many arguments");
 	else
+	{
 		free_list(&everything);
 		free_char_tab(env);
 		exit(status);
+	}
 }
 
 void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
@@ -64,6 +66,4 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 		our_exit(cmd, *env);
 	dup2(fdoutsave, 1);
 	dup2(fdinsave, 0);
-	//close(fdoutsave);
-	//close(fdinsave);
 }

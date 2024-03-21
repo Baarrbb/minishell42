@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:27:29 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/04 13:49:03 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/21 10:55:38 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,20 @@ void	redirections_in(t_cmd *cmd, t_exec *data)
 	if (cmd->redir)
 	{
 		oldredir = cmd->redir;
-		fd = 0;
-		if (cmd->redir)
-			fd = -1;
+		fd = -1;
 		while (cmd->redir != NULL)
 		{
-			if (fd > 2)
-				close(fd);
 			if (cmd->redir->in)
 				fd = open(cmd->redir->filename, O_RDONLY);
 			else if (cmd->redir->in_read)
 				fd = heredoc(cmd, data);
 			cmd->redir = cmd->redir->next;
 		}
-		dup2(fd, 0);
-		if (fd > 2)
+		if (fd != -1)
+		{
+			dup2(fd, 0);
 			close(fd);
+		}
 		cmd->redir = oldredir;
 	}
 }
@@ -62,7 +60,6 @@ void	redirections_pipe_out(t_exec *data)
 			perror("dup2 error to do");
 			exit(EXIT_FAILURE);
 		}
-		printf("pipeoutbuiltin");	
 	}
 }
 
