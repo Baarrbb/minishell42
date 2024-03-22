@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 21:56:24 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:42:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char *get_ourenv_wo_equal(char *tofind, char **env)
+{
+	int	i;
+
+	if (env)
+	{
+		i = -1;
+		while (env[++i])
+		{
+			if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
+			{
+				printf("ft_strncmp srg fau;lt ??\n");
+				return (ft_strdup(env[i] + ft_strlen(tofind) + 1));
+			}
+		}
+	}
+	return (0);
+}
 
 static char	*update_env(char *line, char *new, char *path)
 {
@@ -70,8 +89,11 @@ static void	move_cd(char *path, char ***env, char *oldpwd)
 	ret = 1;
 	if (!path || !ft_strncmp(path, "--\0", 3) || !ft_strncmp(path, "~\0", 2))
 	{
-		if (get_ourenv("HOME", *env, 0))
+		if (get_ourenv_wo_equal("HOME", *env))
+		{
+			printf("%s\n", get_ourenv_wo_equal("HOMEB", *env));
 			ret = chdir(get_ourenv("HOME", *env, 0));
+		}
 		else
 			printf("%s HOME not set\n", ERROR_CD);
 	}
@@ -83,9 +105,9 @@ static void	move_cd(char *path, char ***env, char *oldpwd)
 	else if (!ft_strncmp(path, "-\0", 2) && !get_ourenv("OLDPWD", *env, 0))
 		printf("%s OLDPWD not set\n", ERROR_CD);
 	else if (path[0] == '-' && path[1] == '-' && path[3])
-		printf("%s: --: invalid option\n", ERROR_CD);
+		printf("%s --: invalid option\n", ERROR_CD);
 	else if (path[0] == '-' && path[1])
-		printf("%s: -%c: invalid option\n", ERROR_CD, path[1]);
+		printf("%s -%c: invalid option\n", ERROR_CD, path[1]);
 	else
 		ret = chdir(path);
 	ret_cd(ret, env, oldpwd);
@@ -105,7 +127,7 @@ void	our_cd(t_cmd *cmd, char ***env)
 	}
 	if (nb_args > 2)
 	{
-		printf("%s too many arguments\n", ERROR_CD);
+		printf("%s: too many arguments\n", ERROR_CD);
 		return ;
 	}
 	getcwd(oldpwd, PATH_MAX);
