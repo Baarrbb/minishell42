@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:44:01 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/19 18:38:30 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:17:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ static int	check_syntax_pipe(char **args, int size)
 			printf("%s`|\'\n", ERROR_MSG);
 			return (0);
 		}
+		else if (args[0][0] == '&' && args[0][1] == '&')
+			return (printf("%s`&&\'\n", ERROR_MSG), 0);
+		else if (args[0][0] == '&')
+			return (printf("%s`&\'\n", ERROR_MSG), 0);
 		return (1);
 	}
 	return (0);
