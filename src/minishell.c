@@ -6,7 +6,7 @@
 /*   By: ersees <ersees@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/22 17:05:50 by ersees           ###   ########.fr       */
+/*   Updated: 2024/03/22 17:36:44 by ersees           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline(prompt);
 		rl_on_new_line();
 		if (!line)
-		{
-			printf("Test\n");
 			return (our_exit(pipe, cpy_env), 0);
-		}
 		if (line[0] != ' ' && line[0] != 0)
 			add_history(line);
 		if (g_sigint_received == 2)
