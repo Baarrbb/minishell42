@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ersees <ersees@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:02:42 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/02/26 16:13:03 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:16:32 by ersees           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,5 @@ void	error_managing(t_cmd *command)
 	is_a_directory(command);
 	no_such_file_or_directory(command);
 	command_not_found(command);
+	printf("there\n");
 }
