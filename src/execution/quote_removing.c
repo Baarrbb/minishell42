@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_removing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 19:12:54 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/24 18:10:59 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/22 12:02:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,10 @@ static void	remove_quotes(t_cmd *cmd)
 {
 	int		i;
 	int		j;
-	char	*new;
 	char	*tmp;
 
 	i = 0;
 	j = 0;
-	new = 0;
 	while (cmd->cmd[i])
 	{
 		tmp = cmd->cmd[i];

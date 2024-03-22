@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/29 23:25:19 by bsuc              #+#    #+#              #
-#    Updated: 2024/02/25 17:58:51 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/22 11:59:23 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ OBJ =  $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.c=.o)))
 NAME = minishell
 RM = rm -rf
 CC = cc
-CFLAGS = -Wall -Wextra  -g #-Werror
+CFLAGS = -Wall -Wextra -g #-Werror
 LIBFT = libft/libft.a
 INC = -I./headers
 
