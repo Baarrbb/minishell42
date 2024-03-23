@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/23 15:46:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 15:53:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,11 @@ void	our_exit(t_cmd *everything, char **env, t_exec *data)
 		free_list(&everything);
 	}
 	free_char_tab(env);
-	close_all_pipes(data->numpipes, data->pipefds);
-	free_struct_exec(data);
+	if (data)
+	{
+		close_all_pipes(data->numpipes, data->pipefds);
+		free_struct_exec(data);
+	}
 	exit(status);
 }
 

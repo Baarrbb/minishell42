@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 15:27:37 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 15:52:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ static char	*display_prompt(char **env)
 	getcwd(pwd, PATH_MAX);
 	parse_pwd = parse_home(pwd, env);
 	prompt = strjoin(prompt, "minishell: ");
-	prompt = strjoin(prompt, CYAN);
+	prompt = strjoin(prompt, "\001" CYAN "\002");
 	prompt = strjoin(prompt, parse_pwd);
 	free(parse_pwd);
-	prompt = strjoin(prompt, RESET);
+	prompt = strjoin(prompt, "\001" RESET "\002");
 	prompt = strjoin(prompt, " $ ");
 	return (prompt);
 }
@@ -106,7 +106,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline(prompt);
 		rl_on_new_line();
 		if (!line)
-			return (our_exit(pipe, cpy_env), 0);
+			return (our_exit(pipe, cpy_env, 0), 0);
 		if (line[0] != ' ' && line[0] != 0)
 			add_history(line);
 		if (g_sigint_received == 2)
@@ -114,7 +114,6 @@ int	main(int ac, char **av, char **envp)
 			sortie = 130;
 			g_sigint_received = 0;
 		}
-		
 		check_line(line, &pipe, cpy_env);
 		print_linked_list(pipe);
 		free(prompt);
