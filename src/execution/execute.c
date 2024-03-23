@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/23 15:38:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 15:56:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 	wait_result = 0;
 	data->index = 0;
 	while (data->index < data->numpipes)
-	{ 
+	{
 		if (data->builtin[data->index] == 0)
 			wait_result = waitpid(data->pid[data->index], &status, 0);
 		if (wait_result == -1)

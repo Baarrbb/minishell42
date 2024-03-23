@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/13 20:46:44 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 17:51:23 by marvin           ###   ########.fr       */
+/*   Created: 2023/10/19 23:18:40 by marvin            #+#    #+#             */
+/*   Updated: 2024/01/20 19:47:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	our_env(char **env)
+int	ft_isalnum(int c)
 {
-	int	i;
-
-	i = -1;
-	if (env)
-	{
-		while (env[++i])
-		{
-			if (ft_strchr(env[i], '='))
-				printf("%s\n", env[i]);
-		}
-	}
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (1);
+	return (0);
 }

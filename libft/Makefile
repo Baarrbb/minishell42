@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 17:04:31 by bsuc              #+#    #+#              #
-#    Updated: 2024/02/25 17:42:09 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/23 17:10:03 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,10 @@ SRCS = \
 	ft_strdup.c \
 	ft_itoa.c \
 	ft_atoi.c \
-	ft_putstr_fd.c
+	ft_putstr_fd.c \
+	ft_isdigit.c \
+	ft_isalnum.c \
+	ft_isalpha.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
 NAME = libft.a

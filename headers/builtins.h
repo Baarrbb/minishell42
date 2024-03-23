@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:14:03 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 15:36:11 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 16:59:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 # define ERROR_CD "minishell: cd: "
+# define ERROR_EXPORT "minishell: export: "
 
 char	*get_ourenv_wo_equal(char *tofind, char **env);
 

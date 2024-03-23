@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:27:29 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/21 10:55:38 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:56:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	redirections_in(t_cmd *cmd, t_exec *data)
 
 void	redirections_pipe_out(t_exec *data)
 {
-	
 	if (data->index != 0)
 	{
 		if (dup2(data->pipefds[data->pipeindex - 2], 0) < 0)

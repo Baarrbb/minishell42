@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 15:52:51 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 16:00:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	main(int ac, char **av, char **envp)
 		line = readline(prompt);
 		rl_on_new_line();
 		if (!line)
-			return (our_exit(pipe, cpy_env, 0), 0);
+			return (free(prompt), our_exit(pipe, cpy_env, 0), 0);
 		if (line[0] != ' ' && line[0] != 0)
 			add_history(line);
 		if (g_sigint_received == 2)
