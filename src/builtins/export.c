@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 18:29:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 21:16:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,28 @@ static void	print_export_alpha(char **env)
 	free_char_tab(sort);
 }
 
-static char *get_name_var(char *var)
+static char	*get_name_var(char *var)
 {
 	char	*name;
 	int		i;
 
+	i = 0;
 	while (var[i] && var[i] != '=')
 		i++;
 	name = ft_substr(var, 0, i);
 	return (name);
+}
+
+static char	*get_value(char *var)
+{
+	char	*val;
+	int		i;
+
+	i = 0;
+	while (var[i] && var[i] != '=')
+		i++;
+	val = ft_substr(var, i + 1, ft_strlen(var));
+	return (val);
 }
 
 static int	check_already_in(char *var, char **env)
@@ -162,12 +175,11 @@ void	put_var(char ***env, char *var)
 			else
 				len = ft_strlen(name);
 			if (!ft_strncmp(name, name_in, len))
-			{
-				
-			}
+				new[i] = ft_strdup(var);
+			else
+				new[i] = ft_strdup(tmp[i]);
 		}
 	}
-
 	free_char_tab(*env);
 	*env = new;
 }
