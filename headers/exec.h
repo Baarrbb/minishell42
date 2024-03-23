@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:14:45 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/26 17:09:06 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:35:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define FILE_O_FLAGS (O_WRONLY | O_APPEND | O_CREAT)
 # define FILE_PERM (S_IRUSR | S_IWUSR)
 # define FILE_O_FLAGS_RDWR (O_CREAT | O_RDWR | O_TRUNC)
+
+void	free_struct_exec(t_exec *data);
 
 /*test*/
 int		execute_test(t_cmd *pipe, char ***envp);

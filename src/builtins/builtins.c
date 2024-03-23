@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ersees <ersees@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/22 17:36:20 by ersees           ###   ########.fr       */
+/*   Updated: 2024/03/23 15:46:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*get_ourenv_wo_equal(char *tofind, char **env)
+{
+	int	i;
+
+	if (env)
+	{
+		i = -1;
+		while (env[++i])
+		{
+			if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
+			{
+				return (ft_strdup(env[i] + ft_strlen(tofind) + 1));
+			}
+		}
+	}
+	return (0);
+}
 
 void	our_pwd(void)
 {
@@ -22,7 +40,7 @@ void	our_pwd(void)
 		printf("getcwd() error");
 }
 
-void	our_exit(t_cmd *everything, char **env)
+void	our_exit(t_cmd *everything, char **env, t_exec *data)
 {
 	int	status;
 
@@ -42,6 +60,8 @@ void	our_exit(t_cmd *everything, char **env)
 		free_list(&everything);
 	}
 	free_char_tab(env);
+	close_all_pipes(data->numpipes, data->pipefds);
+	free_struct_exec(data);
 	exit(status);
 }
 
@@ -69,7 +89,11 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 	else if (!ft_strncmp(cmd->cmd[0], "env", ft_strlen("env")))
 		our_env(*env);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
-		our_exit(cmd, *env);
+	{
+		close(fdinsave);
+		close(fdoutsave);
+		our_exit(cmd, *env, data);
+	}
 	dup2(fdoutsave, 1);
 	dup2(fdinsave, 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ersees <ersees@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/22 17:36:44 by ersees           ###   ########.fr       */
+/*   Updated: 2024/03/23 15:27:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	main(int ac, char **av, char **envp)
 		
 		check_line(line, &pipe, cpy_env);
 		print_linked_list(pipe);
+		free(prompt);
 		if (pipe)
 		{
 			if (handle_quoting(pipe, cpy_env, sortie) == 0)

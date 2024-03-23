@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:14:03 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 21:46:15 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/23 15:36:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define BUILTINS_H
 
 # include "minishell.h"
-# define ERROR_CD "minishell: cd:"
+# define ERROR_CD "minishell: cd: "
+
+char	*get_ourenv_wo_equal(char *tofind, char **env);
 
 /* ECHO_C */
 void	our_echo(char **cmds_args);
@@ -36,6 +38,6 @@ void	our_unset(char **cmds, char **copy_env);
 void	our_env(char **env);
 
 /* EXIT_C */
-void	our_exit(t_cmd *everything, char **env);
+void	our_exit(t_cmd *everything, char **env, t_exec *data);
 
 #endif

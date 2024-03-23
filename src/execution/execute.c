@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/21 10:47:44 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:38:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,14 @@ static t_exec	*fill_struct_exec(t_cmd *command)
 	return (data);
 }
 
-static void	free_struct_exec(t_exec *data)
+void	free_struct_exec(t_exec *data)
 {
 	free(data->pipefds);
 	free(data->pid);
+	if (data->builtin)
+	{
+		free(data->builtin);
+	}
 	free(data);
 }
 
