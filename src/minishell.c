@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 13:48:10 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 15:40:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,17 @@ static char	*display_prompt(char **env)
 	pwd = get_ourenv_wo_alloc("PWD", env);
 	if (pwd)
 		parse_pwd = parse_home(pwd, env);
-	else
-	{
-		getcwd(our_pwd, PATH_MAX);
+	else if (getcwd(our_pwd, PATH_MAX))
 		parse_pwd = parse_home(our_pwd, env);
-	}
+	else if (get_ourenv_wo_alloc("OLDPWD", env))
+		parse_pwd = parse_home(get_ourenv_wo_alloc("OLDPWD", env), env);
+	else
+		parse_pwd = 0;
 	prompt = strjoin(prompt, "minishell: ");
 	prompt = strjoin(prompt, "\001" CYAN "\002");
 	prompt = strjoin(prompt, parse_pwd);
-	free(parse_pwd);
+	if (parse_pwd)
+		free(parse_pwd);
 	prompt = strjoin(prompt, "\001" RESET "\002");
 	prompt = strjoin(prompt, " $ ");
 	return (prompt);

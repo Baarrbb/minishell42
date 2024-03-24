@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 03:06:47 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 15:36:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int	check_already_in(char *var, char **env)
 	if (!env)
 		return (1);
 	name = get_name_var(var, 0);
+	if (!name)
+		return (0);
 	j = -1;
 	while (env[++j])
 	{
@@ -70,6 +72,8 @@ void	put_var(char ***env, char *var, int add)
 	char	**new;
 	int		i;
 
+	if (!var)
+		return ;
 	tmp = *env;
 	new = ft_calloc(get_size(tmp) + 2, sizeof(char *));
 	if (!new)

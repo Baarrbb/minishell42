@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 00:12:46 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/24 03:04:53 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 15:34:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ char	*get_name_var(char *var, int add)
 	int		i;
 
 	i = 0;
+	if (!var)
+		return (0);
 	if (!add)
 	{
 		while (var[i] && var[i] != '=')
