@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 23:23:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 01:04:54 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ static void	ret_cd(int ret, char ***env, char *oldpwd, char *path)
 	if (ret == 0)
 		refresh_env_pwd(env, pwd, oldpwd);
 	else if (ret < 0)
-	{
 		printf("%s%s: %s\n", ERROR_CD, path, strerror(errno));
-	}
 	else
 		return ;
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 00:20:31 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 01:03:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,16 @@ static int	check_already_in(char *var, char **env)
 			len = ft_strlen(name);
 		if (!ft_strncmp(name, name_in, len))
 			return (free(name), free(name_in), 1);
+		free(name_in);
 	}
 	free(name);
-	free(name_in);
 	return (0);
 }
 
 static	char	**add_var(char **tmp, char **new, char *var, int add)
 {
 	int		i;
+	char	*val;
 
 	i = -1;
 	while (tmp[++i])
@@ -52,7 +53,9 @@ static	char	**add_var(char **tmp, char **new, char *var, int add)
 			else
 			{
 				new[i] = ft_strdup(tmp[i]);
-				new[i] = strjoin(new[i], get_value(var));
+				val = get_value(var);
+				new[i] = strjoin(new[i], val);
+				free(val);
 			}
 		}
 		else
@@ -112,20 +115,21 @@ static int	check_arg(char *arg)
 void	our_export(t_cmd *cmd, char ***env)
 {
 	int		i;
-	char	*arg;
 	char	*wo_add;
+	char	*val;
 
 	i = 0;
 	while (cmd->cmd[++i])
 	{
-		arg = cmd->cmd[i];
-		if (check_arg(arg) == 1)
+		if (check_arg(cmd->cmd[i]) == 1)
 			continue ;
-		if (check_arg(arg) == 2)
+		else if (check_arg(cmd->cmd[i]) == 2)
 		{
+			val = get_value(cmd->cmd[i]);
 			wo_add = get_name_var(cmd->cmd[i], 1);
 			wo_add = strjoin(wo_add, "=");
-			wo_add = strjoin(wo_add, get_value(cmd->cmd[i]));
+			wo_add = strjoin(wo_add, val);
+			free(val);
 			put_var(env, wo_add, 1);
 			free(wo_add);
 		}

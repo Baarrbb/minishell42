@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 00:12:46 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/24 00:15:55 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 00:59:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	cmp_name(char *var1, char *var2)
 	char	*name;
 	char	*name_in;
 	int		len;
+	int		ret;
 
 	name = get_name_var(var1, 0);
 	name_in = get_name_var(var2, 0);
@@ -70,5 +71,8 @@ int	cmp_name(char *var1, char *var2)
 		len = ft_strlen(name_in);
 	else
 		len = ft_strlen(name);
-	return (ft_strncmp(name, name_in, len));
+	ret = ft_strncmp(name, name_in, len);
+	free(name);
+	free(name_in);
+	return (ret);
 }

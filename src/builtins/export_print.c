@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_export.c                                     :+:      :+:    :+:   */
+/*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 00:15:10 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/24 00:33:38 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 00:55:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 static char	*add_quotes(char *new, char *add)
 {
-	int		j;
-	char	*new_var;
+	char	*name;
+	char	*val;
 
-	j = 0;
-	while (add[j] != '=')
-		j++;
-	new = strjoin(new, ft_substr(add, 0, j + 1));
+	name = get_name_var(add, 0);
+	val = get_value(add);
+	new = strjoin(new, name);
+	new = strjoin(new, "=");
 	new = strjoin(new, "\"");
-	new_var = ft_substr(add, j + 1, ft_strlen(add) - j);
-	new = strjoin(new, new_var);
-	free(new_var);
+	new = strjoin(new, val);
 	new = strjoin(new, "\"");
+	free(name);
+	free(val);
 	return (new);
 }
 
