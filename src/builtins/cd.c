@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 03:12:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 14:19:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static char	*update_env(char *line, char *new, char *path)
 	free(line);
 	line = 0;
 	line = strjoin(line, new);
-	line = strjoin(line, path);
+	if (path)
+		line = strjoin(line, path);
 	return (line);
 }
 
@@ -38,7 +39,7 @@ static void	refresh_env_pwd(char ***env, char *pwd, char *oldpwd)
 			tmp[i] = update_env(tmp[i], "OLDPWD=", oldpwd);
 			get_old = 1;
 		}
-		if (!ft_strncmp(tmp[i], "PWD=", ft_strlen("PWD=")))
+		if (oldpwd && !ft_strncmp(tmp[i], "PWD=", ft_strlen("PWD=")))
 			tmp[i] = update_env(tmp[i], "PWD=", pwd);
 	}
 	if (!get_old)
@@ -50,7 +51,7 @@ static void	refresh_env_pwd(char ***env, char *pwd, char *oldpwd)
 	}
 }
 
-static void	ret_cd(int ret, char ***env, char *oldpwd, char *path)
+static int	ret_cd(int ret, char ***env, char *oldpwd, char *path)
 {
 	char	pwd[PATH_MAX];
 	char	*err_pwd;
@@ -63,17 +64,17 @@ static void	ret_cd(int ret, char ***env, char *oldpwd, char *path)
 		chdir(err_pwd);
 		refresh_env_pwd(env, err_pwd, oldpwd);
 		free(err_pwd);
-		return ;
+		return (1);
 	}
 	if (ret == 0)
-		refresh_env_pwd(env, pwd, oldpwd);
+		return (refresh_env_pwd(env, pwd, oldpwd), 0);
 	else if (ret < 0)
-		printf("%s%s: %s\n", ERROR_CD, path, strerror(errno));
+		return (printf("%s%s: %s\n", ERROR_CD, path, strerror(errno)), 1);
 	else
-		return ;
+		return (1);
 }
 
-static void	move_cd(char *path, char ***env, char *oldpwd)
+static int	move_cd(char *path, char ***env, char *oldpwd)
 {
 	int		ret;
 
@@ -89,6 +90,7 @@ static void	move_cd(char *path, char ***env, char *oldpwd)
 	{
 		printf("%s\n", get_ourenv_wo_alloc("OLDPWD", *env));
 		ret = chdir(get_ourenv_wo_alloc("OLDPWD", *env));
+		return (ret_cd(ret, env, oldpwd, get_ourenv_wo_alloc("OLDPWD", *env)));
 	}
 	else if (!ft_strncmp(path, "-\0", 2)
 		&& !get_ourenv_wo_alloc("OLDPWD", *env))
@@ -99,7 +101,7 @@ static void	move_cd(char *path, char ***env, char *oldpwd)
 		printf("%s-%c: invalid option\n", ERROR_CD, path[1]);
 	else
 		ret = chdir(path);
-	ret_cd(ret, env, oldpwd, path);
+	return (ret_cd(ret, env, oldpwd, path));
 }
 
 int	our_cd(t_cmd *cmd, char ***env)
@@ -107,6 +109,7 @@ int	our_cd(t_cmd *cmd, char ***env)
 	int		nb_args;
 	char	*arg;
 	char	*oldpwd;
+	char	oldpwd_fail[PATH_MAX];
 	int		ret;
 
 	nb_args = 0;
@@ -120,9 +123,16 @@ int	our_cd(t_cmd *cmd, char ***env)
 		printf("%stoo many arguments\n", ERROR_CD);
 		return (1);
 	}
-	oldpwd = get_ourenv_wo_equal("PWD", *env);
 	arg = cmd->cmd[1];
-	move_cd(arg, env, oldpwd);
+	oldpwd = get_ourenv_wo_equal("PWD", *env);
+	// if (!oldpwd)
+	// {
+	// 	getcwd(oldpwd_fail, PATH_MAX);
+	// 	ret = move_cd(arg, env, oldpwd_fail);
+	// }
+	// else
+	ret = move_cd(arg, env, oldpwd);
+	printf("retour %d\n", ret);
 	free(oldpwd);
 	return (ret);
 }
