@@ -6,13 +6,13 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 02:11:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 17:38:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_ourenv_wo_alloc(char *tofind, char **env)
+char	*ourenv_wo_alloc(char *tofind, char **env)
 {
 	int	i;
 
@@ -22,9 +22,7 @@ char	*get_ourenv_wo_alloc(char *tofind, char **env)
 		while (env[++i])
 		{
 			if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
-			{
 				return (env[i] + ft_strlen(tofind) + 1);
-			}
 		}
 	}
 	return (0);
@@ -40,9 +38,7 @@ char	*get_ourenv_wo_equal(char *tofind, char **env)
 		while (env[++i])
 		{
 			if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
-			{
 				return (ft_strdup(env[i] + ft_strlen(tofind) + 1));
-			}
 		}
 	}
 	return (0);
@@ -111,10 +107,12 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 		our_env(*env);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
 	{
-		close(fdinsave);
-		close(fdoutsave);
+		// close(fdinsave);
+		// close(fdoutsave);
 		our_exit(cmd, *env, data);
 	}
+	close(fdinsave);
+	close(fdoutsave);
 	dup2(fdoutsave, 1);
 	dup2(fdinsave, 0);
 }

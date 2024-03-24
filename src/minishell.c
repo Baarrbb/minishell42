@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 15:40:25 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 17:45:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,19 @@ static char	*display_prompt(char **env)
 	char	our_pwd[PATH_MAX];
 
 	prompt = 0;
-	pwd = get_ourenv_wo_alloc("PWD", env);
+	pwd = ourenv_wo_alloc("PWD", env);
 	if (pwd)
 		parse_pwd = parse_home(pwd, env);
 	else if (getcwd(our_pwd, PATH_MAX))
 		parse_pwd = parse_home(our_pwd, env);
-	else if (get_ourenv_wo_alloc("OLDPWD", env))
-		parse_pwd = parse_home(get_ourenv_wo_alloc("OLDPWD", env), env);
+	else if (ourenv_wo_alloc("OLDPWD", env))
+		parse_pwd = parse_home(ourenv_wo_alloc("OLDPWD", env), env);
 	else
 		parse_pwd = 0;
 	prompt = strjoin(prompt, "minishell: ");
 	prompt = strjoin(prompt, "\001" CYAN "\002");
-	prompt = strjoin(prompt, parse_pwd);
+	if (parse_pwd)
+		prompt = strjoin(prompt, parse_pwd);
 	if (parse_pwd)
 		free(parse_pwd);
 	prompt = strjoin(prompt, "\001" RESET "\002");
@@ -124,7 +125,7 @@ int	main(int ac, char **av, char **envp)
 			g_sigint_received = 0;
 		}
 		check_line(line, &pipe, cpy_env);
-		// print_linked_list(pipe);
+		print_linked_list(pipe);
 		free(prompt);
 		if (pipe)
 		{

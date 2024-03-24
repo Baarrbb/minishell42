@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/29 23:25:19 by bsuc              #+#    #+#              #
-#    Updated: 2024/03/24 14:02:49 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/24 17:46:04 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC_PARS = $(PARS_DIR)/check_syntax.c \
 
 SRC_BUIL = $(BUIL_DIR)/builtins.c \
 	$(BUIL_DIR)/cd.c \
+	$(BUIL_DIR)/cd_utils.c \
 	$(BUIL_DIR)/echo.c \
 	$(BUIL_DIR)/env.c \
 	$(BUIL_DIR)/export.c \

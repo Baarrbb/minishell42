@@ -6,28 +6,17 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 15:41:59 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 17:47:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*update_env(char *line, char *new, char *path)
-{
-	free(line);
-	line = 0;
-	line = strjoin(line, new);
-	if (path)
-		line = strjoin(line, path);
-	return (line);
-}
 
 static void	refresh_env_pwd(char ***env, char *pwd, char *oldpwd)
 {
 	char	**tmp;
 	int		i;
 	int		get_old;
-	char	*line;
 
 	tmp = *env;
 	i = -1;
@@ -43,14 +32,7 @@ static void	refresh_env_pwd(char ***env, char *pwd, char *oldpwd)
 			tmp[i] = update_env(tmp[i], "PWD=", pwd);
 	}
 	if (!get_old)
-	{
-		line = strjoin(0, "OLDPWD=");
-		line = strjoin(line, oldpwd);
-		if (oldpwd)
-			free(oldpwd);
-		put_var(env, line, 0);
-		free(line);
-	}
+		put_old(env, oldpwd);
 }
 
 static int	ret_cd(int ret, char ***env, char *oldpwd, char *path)
@@ -86,19 +68,18 @@ static int	move_cd(char *path, char ***env, char *oldpwd)
 	ret = 1;
 	if (!path || !ft_strncmp(path, "--\0", 3) || !ft_strncmp(path, "~\0", 2))
 	{
-		if (get_ourenv_wo_alloc("HOME", *env))
-			ret = chdir(get_ourenv_wo_alloc("HOME", *env));
+		if (ourenv_wo_alloc("HOME", *env))
+			ret = chdir(ourenv_wo_alloc("HOME", *env));
 		else
 			printf("%sHOME not set\n", ERROR_CD);
 	}
-	else if (!ft_strncmp(path, "-\0", 2) && get_ourenv_wo_alloc("OLDPWD", *env))
+	else if (!ft_strncmp(path, "-\0", 2) && ourenv_wo_alloc("OLDPWD", *env))
 	{
-		printf("%s\n", get_ourenv_wo_alloc("OLDPWD", *env));
-		ret = chdir(get_ourenv_wo_alloc("OLDPWD", *env));
-		return (ret_cd(ret, env, oldpwd, get_ourenv_wo_alloc("OLDPWD", *env)));
+		printf("%s\n", ourenv_wo_alloc("OLDPWD", *env));
+		ret = chdir(ourenv_wo_alloc("OLDPWD", *env));
+		return (ret_cd(ret, env, oldpwd, ourenv_wo_alloc("OLDPWD", *env)));
 	}
-	else if (!ft_strncmp(path, "-\0", 2)
-		&& !get_ourenv_wo_alloc("OLDPWD", *env))
+	else if (!ft_strncmp(path, "-\0", 2) && !ourenv_wo_alloc("OLDPWD", *env))
 		printf("%sOLDPWD not set\n", ERROR_CD);
 	else if (path[0] == '-' && path[1] == '-' && path[3])
 		printf("%s--: invalid option\n", ERROR_CD);

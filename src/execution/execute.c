@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/23 15:56:58 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 17:44:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,20 @@ static void	exec(t_cmd *command, t_exec *data, char **envp)
 		close_all_pipes(data->numpipes, data->pipefds);
 		free_struct_exec(data);
 		//close(0);
-		error_managing(command);
+		error_managing(command, envp);
 		if (execve(command->path_cmd, command->cmd, envp) < 0)
 		{
 			perror(command->path_cmd);
+			free_list(&command);
+			free_char_tab(envp);
 			exit(127);
 		}
 	}
 	else if (data->pid[data->index] < 0)
 	{
 		perror("dup2 error to do");
+		free_list(&command);
+		free_char_tab(envp);
 		exit(EXIT_FAILURE);
 	}
 }
