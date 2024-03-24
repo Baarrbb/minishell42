@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:54:21 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 19:07:12 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 19:14:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	handle_var(t_cmd *cmd, char **our_envp, char *sortie)
 			etat = in_quotes(cmd->cmd[i][j], etat);
 			if (cmd->cmd[i][j] == '$' && !cmd->cmd[i][j + 1])
 				return (1);
-			if (cmd->cmd[i][j] == '$' && etat != 2 && cmd->cmd[i][j - 1] != '\\')
+			if (cmd->cmd[i][j] == '$' && etat != 2 && (j - 1 < 0 || cmd->cmd[i][j - 1] != '\\'))
 			{
 				cmd->cmd[i] = replace_dollar(cmd->cmd[i], j, our_envp, sortie);
 				j = 0;
