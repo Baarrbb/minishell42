@@ -6,117 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 21:16:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 00:20:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	get_size(char **env)
-{
-	int		i;
-
-	i = 0;
-	if (env)
-	{
-		while (env[i])
-			i++;
-	}
-	return (i);
-}
-
-static char	**cpy_env_sort(char **env)
-{
-	char	**sort;
-	char	*new_var;
-	int		size;
-	int		i;
-	int		j;
-	int		len_var;
-
-	if (!env)
-		return (0);
-	size = get_size(env);
-	i = -1;
-	sort = ft_calloc(size + 1, sizeof(char *));
-	if (!sort)
-		return (0);
-	while (env[++i])
-	{
-		len_var = (int)ft_strlen(env[i]);
-		j = 0;
-		while (env[i][j] != '=')
-			j++;
-		new_var = ft_substr(env[i], 0, j + 1);
-		sort[i] = strjoin(sort[i], new_var);
-		free(new_var);
-		if (ft_strchr(env[i], '='))
-		{
-			sort[i] = strjoin(sort[i], "\"");
-			new_var = ft_substr(env[i], j + 1, len_var);
-			sort[i] = strjoin(sort[i], new_var);
-			free(new_var);
-			sort[i] = strjoin(sort[i], "\"");
-		}
-	}
-	return (sort);
-}
-
-static void	print_export_alpha(char **env)
-{
-	char	*tmp;
-	int		i;
-	int		j;
-	char	**sort;
-
-	sort = cpy_env_sort(env);
-	i = -1;
-	while (++i < get_size(env) - 1)
-	{
-		j = -1;
-		while (++j < get_size(env) - i - 1)
-		{
-			if (ft_strncmp(sort[j], sort[j + 1], ft_strlen(sort[j])) > 0)
-			{
-				tmp = sort[j];
-				sort[j] = sort[j + 1];
-				sort[j + 1] = tmp;
-			}
-		}
-	}
-	i = -1;
-	while (sort[++i])
-	{
-		if (!ft_strncmp(sort[i], "_=", 2))
-			continue;
-		printf("declare -x %s\n", sort[i]);
-	}
-	free_char_tab(sort);
-}
-
-static char	*get_name_var(char *var)
-{
-	char	*name;
-	int		i;
-
-	i = 0;
-	while (var[i] && var[i] != '=')
-		i++;
-	name = ft_substr(var, 0, i);
-	return (name);
-}
-
-static char	*get_value(char *var)
-{
-	char	*val;
-	int		i;
-
-	i = 0;
-	while (var[i] && var[i] != '=')
-		i++;
-	val = ft_substr(var, i + 1, ft_strlen(var));
-	return (val);
-}
 
 static int	check_already_in(char *var, char **env)
 {
@@ -127,11 +21,11 @@ static int	check_already_in(char *var, char **env)
 
 	if (!env)
 		return (1);
-	name = get_name_var(var);
+	name = get_name_var(var, 0);
 	j = -1;
 	while (env[++j])
 	{
-		name_in = get_name_var(env[j]);
+		name_in = get_name_var(env[j], 0);
 		if (ft_strlen(name) < ft_strlen(name_in))
 			len = ft_strlen(name_in);
 		else
@@ -144,14 +38,34 @@ static int	check_already_in(char *var, char **env)
 	return (0);
 }
 
-void	put_var(char ***env, char *var)
+static	char	**add_var(char **tmp, char **new, char *var, int add)
+{
+	int		i;
+
+	i = -1;
+	while (tmp[++i])
+	{
+		if (!cmp_name(var, tmp[i]))
+		{
+			if (!add)
+				new[i] = ft_strdup(var);
+			else
+			{
+				new[i] = ft_strdup(tmp[i]);
+				new[i] = strjoin(new[i], get_value(var));
+			}
+		}
+		else
+			new[i] = ft_strdup(tmp[i]);
+	}
+	return (new);
+}
+
+void	put_var(char ***env, char *var, int add)
 {
 	char	**tmp;
 	char	**new;
-	char	*name;
-	char	*name_in;
 	int		i;
-	int		len;
 
 	tmp = *env;
 	new = ft_calloc(get_size(tmp) + 2, sizeof(char *));
@@ -165,65 +79,59 @@ void	put_var(char ***env, char *var)
 		new[i] = ft_strdup(var);
 	}
 	else
-	{
-		name = get_name_var(var);
-		while (tmp[++i])
-		{
-			name_in = get_name_var(tmp[i]);
-			if (ft_strlen(name) < ft_strlen(name_in))
-				len = ft_strlen(name_in);
-			else
-				len = ft_strlen(name);
-			if (!ft_strncmp(name, name_in, len))
-				new[i] = ft_strdup(var);
-			else
-				new[i] = ft_strdup(tmp[i]);
-		}
-	}
+		new = add_var(tmp, new, var, add);
 	free_char_tab(*env);
 	*env = new;
 }
 
 static int	check_arg(char *arg)
 {
-	int	j;
+	int		j;
+	char	*err;
 
+	err = ": not a valid identifier";
 	if (arg[0] && ft_isdigit(arg[0]))
+		return (printf("%s`%s'%s\n", ERROR_EXPORT, arg, err), 1);
+	j = -1;
+	while (arg[++j])
 	{
-		printf("%s`%s': not a valid identifier\n", ERROR_EXPORT, arg);
-		return (1);
+		if (arg[j] == '=' && arg[j - 1] && arg[j - 1] == '+')
+			return (2);
 	}
 	j = -1;
 	while (arg[++j] && arg[j] != '=')
 	{
 		if (!ft_isalnum(arg[j]) && arg[j] != '_')
-		{
-			printf("%s`%s': not a valid identifier\n", ERROR_EXPORT, arg);
-			return (1);
-		}
+			return (printf("%s`%s'%s\n", ERROR_EXPORT, arg, err), 1);
 	}
 	if (j == 0)
-	{
-		printf("%s`%s': not a valid identifier\n", ERROR_EXPORT, arg);
-		return (1);
-	}
+		return (printf("%s`%s'%s\n", ERROR_EXPORT, arg, err), 1);
 	return (0);
 }
 
 void	our_export(t_cmd *cmd, char ***env)
 {
 	int		i;
-	int		j;
 	char	*arg;
+	char	*wo_add;
 
 	i = 0;
 	while (cmd->cmd[++i])
 	{
 		arg = cmd->cmd[i];
-		if (check_arg(arg))
+		if (check_arg(arg) == 1)
 			continue ;
-		put_var(env, cmd->cmd[i]);
+		if (check_arg(arg) == 2)
+		{
+			wo_add = get_name_var(cmd->cmd[i], 1);
+			wo_add = strjoin(wo_add, "=");
+			wo_add = strjoin(wo_add, get_value(cmd->cmd[i]));
+			put_var(env, wo_add, 1);
+			free(wo_add);
+		}
+		else
+			put_var(env, cmd->cmd[i], 0);
 	}
 	if (i == 1 && *env)
-		print_export_alpha(*env);
+		print_export_alpha(*env, get_size(*env));
 }

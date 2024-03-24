@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:14:03 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 16:59:05 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 00:20:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,17 @@ void	our_cd(t_cmd *cmd, char ***env);
 void	our_pwd(void);
 
 /* EXPORT_C */
-void	put_var(char ***env, char *var);
+void	put_var(char ***env, char *var, int add);
 void	our_export(t_cmd *cmd, char ***env);
+
+/* EXPORT_PRINT.C */
+void	print_export_alpha(char **env, int size);
+
+/* EXPORT_UTILS.C */
+char	*get_name_var(char *var, int add);
+char	*get_value(char *var);
+int		cmp_name(char *var1, char *var2);
+int		get_size(char **env);
 
 /* UNSET_C */
 void	our_unset(char **cmds, char **copy_env);

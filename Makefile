@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/29 23:25:19 by bsuc              #+#    #+#              #
-#    Updated: 2024/03/22 11:59:23 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/24 00:20:46 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ SRC_BUIL = $(BUIL_DIR)/builtins.c \
 	$(BUIL_DIR)/echo.c \
 	$(BUIL_DIR)/env.c \
 	$(BUIL_DIR)/export.c \
+	$(BUIL_DIR)/print_export.c \
+	$(BUIL_DIR)/export_utils.c \
 	$(BUIL_DIR)/unset.c
 
 SRC_EXEC = $(EXEC_DIR)/checks_comms.c \

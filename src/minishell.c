@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 16:00:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 23:43:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	main(int ac, char **av, char **envp)
 			g_sigint_received = 0;
 		}
 		check_line(line, &pipe, cpy_env);
-		print_linked_list(pipe);
+		// print_linked_list(pipe);
 		free(prompt);
 		if (pipe)
 		{

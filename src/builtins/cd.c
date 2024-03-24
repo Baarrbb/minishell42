@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 15:21:39 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/23 23:23:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	refresh_env_pwd(char ***env, char *pwd, char *oldpwd)
 		line = 0;
 		line = strjoin(line, "OLDPWD=");
 		line = strjoin(line, oldpwd);
-		put_var(env, line);
+		put_var(env, line, 0);
 	}
 }
 

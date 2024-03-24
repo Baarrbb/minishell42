@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 22:27:19 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 19:35:13 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/23 21:47:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		is_redir(t_cmd **cmd, char **args, int i);
 void	fill_cmd(t_cmd **pipe, char **args);
 
 /* FILL_STRUCT_C */
+char	*check_exist_cmd(char *cmd1, t_cmd *cmd);
 void	fill_struct(t_cmd **pipe, char **args, char **envp);
 
 /* CHECK_SYNTAX_C */
