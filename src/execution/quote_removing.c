@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 19:12:54 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/22 12:02:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 18:37:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,12 @@ static void	remove_quotes(t_cmd *cmd)
 
 int	handle_quoting(t_cmd *quoting, char **env, int sortie)
 {
-	int		i;
 	char	*str_sortie;
 
 	while (quoting)
 	{
-		i = 0;
 		if (quoting->cmd != NULL)
 		{
-			while (quoting->cmd[i])
-				i++;
 			str_sortie = ft_itoa(sortie);
 			if (handle_var(quoting, env, str_sortie) == 0)
 				return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:54:21 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/24 18:18:34 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/24 19:07:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ int	handle_var(t_cmd *cmd, char **our_envp, char *sortie)
 		while (cmd->cmd[i][j])
 		{
 			etat = in_quotes(cmd->cmd[i][j], etat);
+			if (cmd->cmd[i][j] == '$' && !cmd->cmd[i][j + 1])
+				return (1);
 			if (cmd->cmd[i][j] == '$' && etat != 2 && cmd->cmd[i][j - 1] != '\\')
 			{
 				cmd->cmd[i] = replace_dollar(cmd->cmd[i], j, our_envp, sortie);

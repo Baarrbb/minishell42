@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 17:38:24 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 18:22:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,12 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 		our_env(*env);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
 	{
-		// close(fdinsave);
-		// close(fdoutsave);
+		close(fdinsave);
+		close(fdoutsave);
 		our_exit(cmd, *env, data);
 	}
-	close(fdinsave);
-	close(fdoutsave);
+	// close(fdinsave);
+	// close(fdoutsave);
 	dup2(fdoutsave, 1);
 	dup2(fdinsave, 0);
 }
