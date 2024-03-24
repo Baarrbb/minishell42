@@ -6,11 +6,24 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 00:12:46 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/24 00:59:17 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 03:04:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*get_var_wo_add(char *var)
+{
+	char	*val;
+	char	*wo_add;
+
+	val = get_value(var);
+	wo_add = get_name_var(var, 1);
+	wo_add = strjoin(wo_add, "=");
+	wo_add = strjoin(wo_add, val);
+	free(val);
+	return (wo_add);
+}
 
 int	get_size(char **env)
 {

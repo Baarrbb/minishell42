@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 02:33:32 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 03:12:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static void	refresh_env_pwd(char ***env, char *pwd, char *oldpwd)
 	}
 	if (!get_old)
 	{
-		line = 0;
-		line = strjoin(line, "OLDPWD=");
+		line = strjoin(0, "OLDPWD=");
 		line = strjoin(line, oldpwd);
 		put_var(env, line, 0);
+		free(line);
 	}
 }
 
@@ -60,7 +60,6 @@ static void	ret_cd(int ret, char ***env, char *oldpwd, char *path)
 		printf("%serror retrieving current directory: getcwd: cannot "
 			"access parent directories: %s\n", ERROR_CD, strerror(errno));
 		err_pwd = get_ourenv_wo_equal("OLDPWD", *env);
-		chdir(err_pwd);
 		chdir(err_pwd);
 		refresh_env_pwd(env, err_pwd, oldpwd);
 		free(err_pwd);
@@ -103,11 +102,12 @@ static void	move_cd(char *path, char ***env, char *oldpwd)
 	ret_cd(ret, env, oldpwd, path);
 }
 
-void	our_cd(t_cmd *cmd, char ***env)
+int	our_cd(t_cmd *cmd, char ***env)
 {
 	int		nb_args;
 	char	*arg;
 	char	*oldpwd;
+	int		ret;
 
 	nb_args = 0;
 	if (cmd->cmd && cmd->cmd[0])
@@ -118,10 +118,11 @@ void	our_cd(t_cmd *cmd, char ***env)
 	if (nb_args > 2)
 	{
 		printf("%stoo many arguments\n", ERROR_CD);
-		return ;
+		return (1);
 	}
 	oldpwd = get_ourenv_wo_equal("PWD", *env);
 	arg = cmd->cmd[1];
 	move_cd(arg, env, oldpwd);
 	free(oldpwd);
+	return (ret);
 }

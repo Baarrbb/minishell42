@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 01:03:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 03:06:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,24 +112,24 @@ static int	check_arg(char *arg)
 	return (0);
 }
 
-void	our_export(t_cmd *cmd, char ***env)
+int	our_export(t_cmd *cmd, char ***env)
 {
 	int		i;
 	char	*wo_add;
-	char	*val;
+	int		ret;
 
 	i = 0;
+	ret = 0;
 	while (cmd->cmd[++i])
 	{
 		if (check_arg(cmd->cmd[i]) == 1)
+		{
+			ret = 1;
 			continue ;
+		}
 		else if (check_arg(cmd->cmd[i]) == 2)
 		{
-			val = get_value(cmd->cmd[i]);
-			wo_add = get_name_var(cmd->cmd[i], 1);
-			wo_add = strjoin(wo_add, "=");
-			wo_add = strjoin(wo_add, val);
-			free(val);
+			wo_add = get_var_wo_add(cmd->cmd[i]);
 			put_var(env, wo_add, 1);
 			free(wo_add);
 		}
@@ -138,4 +138,5 @@ void	our_export(t_cmd *cmd, char ***env)
 	}
 	if (i == 1 && *env)
 		print_export_alpha(*env, get_size(*env));
+	return (ret);
 }

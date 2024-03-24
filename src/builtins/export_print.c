@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 00:15:10 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/24 00:55:55 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 02:35:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	**cpy_env_sort(char **env, int size)
 	return (sort);
 }
 
-static char **sort_env(char **env, int size)
+static char	**sort_env(char **env, int size)
 {
 	char	*tmp;
 	int		i;
