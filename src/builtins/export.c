@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 15:36:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 21:56:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static int	check_arg(char *arg)
 	if (arg[0] && ft_isdigit(arg[0]))
 		return (printf("%s`%s'%s\n", ERROR_EXPORT, arg, err), 1);
 	j = -1;
+	if (arg[0] == '=')
+		return (printf("%s`%s'%s\n", ERROR_EXPORT, arg, err), 1);
 	while (arg[++j])
 	{
 		if (arg[j] == '=' && arg[j - 1] && arg[j - 1] == '+')
@@ -137,6 +139,8 @@ int	our_export(t_cmd *cmd, char ***env)
 			put_var(env, wo_add, 1);
 			free(wo_add);
 		}
+		else if (cmd->var_env && !check_already_in(cmd->cmd[i], *env))
+			print_export_alpha(*env, get_size(*env));
 		else
 			put_var(env, cmd->cmd[i], 0);
 	}

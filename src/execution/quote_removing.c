@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 19:12:54 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 18:37:58 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 22:38:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ static void	get_arg(t_cmd *cmd, char *arg, char c, int i)
 		j++;
 	while (*arg)
 	{
-		while (arg[j] != c && arg[j])
+		while (arg[j] && arg[j] != c)
 			j++;
 		sub = ft_substr(arg, 0, j);
 		new = strjoin(new, sub);
 		free(sub);
+		if (!arg[j])
+			break;
 		j++;
 		arg += j;
 		j = 0;

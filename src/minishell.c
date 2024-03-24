@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 18:23:05 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 21:20:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 1)
 		return (0);
 	pipe = 0;
-	sortie = 2;
+	sortie = 0;
 	cpy_env = copy_env(envp);
 	sb.sa_handler = handle_sigout;
 	sb.sa_flags = 0;

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:54:21 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 19:14:16 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 22:31:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static char	*remove_dollar(char *str)
 		index_str++;
 	}
 	newstr[index_str] = 0;
+	free(str);
 	return (newstr);
 }
 
@@ -95,7 +96,10 @@ static char	*replace_dollar(char *str, int pos, char **our_envp, char *sortie)
 	variable = strjoin(variable, "=");
 	result = get_ourenv(variable, our_envp, sortie);
 	if (result != NULL)
+	{
 		str = replace_by_env(str, result, (i - pos), ft_strlen(result));
+		free(result);
+	}
 	else
 		str = remove_dollar(str);
 	free(variable);
@@ -114,6 +118,8 @@ int	handle_var(t_cmd *cmd, char **our_envp, char *sortie)
 	while (cmd->cmd[++i])
 	{
 		j = 0;
+		if (cmd->cmd[i][j] == '$')
+			cmd->var_env = 1;
 		while (cmd->cmd[i][j])
 		{
 			etat = in_quotes(cmd->cmd[i][j], etat);
