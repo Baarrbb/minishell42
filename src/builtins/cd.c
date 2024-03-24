@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 01:04:54 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 02:33:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static void	ret_cd(int ret, char ***env, char *oldpwd, char *path)
 			"access parent directories: %s\n", ERROR_CD, strerror(errno));
 		err_pwd = get_ourenv_wo_equal("OLDPWD", *env);
 		chdir(err_pwd);
+		chdir(err_pwd);
 		refresh_env_pwd(env, err_pwd, oldpwd);
 		free(err_pwd);
 		return ;
@@ -80,18 +81,18 @@ static void	move_cd(char *path, char ***env, char *oldpwd)
 	ret = 1;
 	if (!path || !ft_strncmp(path, "--\0", 3) || !ft_strncmp(path, "~\0", 2))
 	{
-		if (get_ourenv_wo_equal("HOME", *env))
-			ret = chdir(get_ourenv_wo_equal("HOME", *env));
+		if (get_ourenv_wo_alloc("HOME", *env))
+			ret = chdir(get_ourenv_wo_alloc("HOME", *env));
 		else
 			printf("%sHOME not set\n", ERROR_CD);
 	}
-	else if (!ft_strncmp(path, "-\0", 2) && get_ourenv_wo_equal("OLDPWD", *env))
+	else if (!ft_strncmp(path, "-\0", 2) && get_ourenv_wo_alloc("OLDPWD", *env))
 	{
-		printf("%s\n", get_ourenv_wo_equal("OLDPWD", *env));
-		ret = chdir(get_ourenv_wo_equal("OLDPWD", *env));
+		printf("%s\n", get_ourenv_wo_alloc("OLDPWD", *env));
+		ret = chdir(get_ourenv_wo_alloc("OLDPWD", *env));
 	}
 	else if (!ft_strncmp(path, "-\0", 2)
-		&& !get_ourenv_wo_equal("OLDPWD", *env))
+		&& !get_ourenv_wo_alloc("OLDPWD", *env))
 		printf("%sOLDPWD not set\n", ERROR_CD);
 	else if (path[0] == '-' && path[1] == '-' && path[3])
 		printf("%s--: invalid option\n", ERROR_CD);

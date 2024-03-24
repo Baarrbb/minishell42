@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 23:43:10 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 02:28:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static char	*parse_home(char *pwd, char **env)
 
 	parse_pwd = 0;
 	home = 0;
-	home = get_ourenv("HOME=", env, home);
+	home = get_ourenv_wo_equal("HOME", env);
 	if (!home)
 		return (ft_strdup(pwd));
-	if (!ft_strncmp(pwd + 1, home, ft_strlen(home)))
+	if (!ft_strncmp(pwd, home, ft_strlen(home)))
 	{
 		parse_pwd = strjoin(parse_pwd, "~");
-		pwd += ft_strlen(home) + 1;
+		pwd += ft_strlen(home);
 		free(home);
 		if (!pwd)
 			return (parse_pwd);
@@ -60,13 +60,11 @@ static char	*parse_home(char *pwd, char **env)
 
 static char	*display_prompt(char **env)
 {
-	char	pwd[PATH_MAX];
 	char	*parse_pwd;
 	char	*prompt;
 
 	prompt = 0;
-	getcwd(pwd, PATH_MAX);
-	parse_pwd = parse_home(pwd, env);
+	parse_pwd = parse_home(get_ourenv_wo_alloc("PWD", env), env);
 	prompt = strjoin(prompt, "minishell: ");
 	prompt = strjoin(prompt, "\001" CYAN "\002");
 	prompt = strjoin(prompt, parse_pwd);

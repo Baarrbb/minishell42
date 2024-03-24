@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:14:03 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 00:20:01 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/24 02:11:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define ERROR_EXPORT "minishell: export: "
 
 char	*get_ourenv_wo_equal(char *tofind, char **env);
+char	*get_ourenv_wo_alloc(char *tofind, char **env);
 
 /* ECHO_C */
 void	our_echo(char **cmds_args);
