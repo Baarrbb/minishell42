@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/25 12:36:17 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:21:19 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	free_struct_exec(t_exec *data)
 	free(data);
 }
 
-static void	exec(t_cmd *command, t_exec *data, char **envp)
+static void	exec(t_cmd *command, t_exec *data, char **envp, t_cmd *start)
 {
 	data->pid[data->index] = fork();
 	if (data->pid[data->index] == 0)
@@ -82,7 +82,7 @@ static void	exec(t_cmd *command, t_exec *data, char **envp)
 		close_all_pipes(data->numpipes, data->pipefds);
 		free_struct_exec(data);
 		//close(0);
-		error_managing(command, envp);
+		error_managing(command, envp, start);
 		if (execve(command->path_cmd, command->cmd, envp) < 0)
 		{
 			perror(command->path_cmd);
@@ -128,10 +128,12 @@ int	execute_test(t_cmd *pipe, char ***envp)
 {
 	t_exec	*data;
 	t_cmd	*command;
+	t_cmd	*start;
 	int		status;
 
 	command = (t_cmd *)pipe;
 	status = 0;
+	start = command;
 	data = fill_struct_exec(command);
 	if (data == NULL)
 		return (-1);
@@ -141,7 +143,7 @@ int	execute_test(t_cmd *pipe, char ***envp)
 		if (command->builtin)
 			builtingo(command, envp, data);
 		else
-			exec(command, data, *envp);
+			exec(command, data, *envp, start);
 		command = command->next;
 		data->pipeindex += 2;
 		data->index++;

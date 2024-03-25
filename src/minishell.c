@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/25 16:06:38 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:45:23 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int	main(int ac, char **av, char **envp)
 				return (printf("Error\n"), 0);
 			check_commands(pipe);
 			sortie = execute_test(pipe, &cpy_env);
+			printf("sortie : %d\n", sortie);
 			if (sortie == -1)
 				return (printf("Error\n"), 0);
 		}

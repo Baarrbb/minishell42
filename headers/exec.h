@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:14:45 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 17:39:28 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 17:21:02 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		handle_quoting(t_cmd *quoting, char **env, int sortie);
 int		count_struct(t_cmd *list);
 void	builtingo(t_cmd *cmd, char ***env, t_exec *data);
 void	error_exec(t_cmd *comands);
-void	error_managing(t_cmd *command, char **envp);
+void	error_managing(t_cmd *command, char **envp, t_cmd *start);
 void	handle_sigint(int sig);
 int		heredoc(t_cmd *test, t_exec *data);
 
