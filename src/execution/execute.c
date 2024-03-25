@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 17:53:05 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 12:36:17 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static void	exec(t_cmd *command, t_exec *data, char **envp)
 		redirections_pipe_in(command, data);
 		redirections_in(command, data);
 		redirections_out(command);
-		printf("test\n");
 		redirections_pipe_out(data);
 		close_all_pipes(data->numpipes, data->pipefds);
 		free_struct_exec(data);
@@ -89,12 +88,12 @@ static void	exec(t_cmd *command, t_exec *data, char **envp)
 			perror(command->path_cmd);
 			free_list(&command);
 			free_char_tab(envp);
-			exit(127);
+			exit(126);
 		}
 	}
 	else if (data->pid[data->index] < 0)
 	{
-		perror("dup2 error to do");
+		perror("fork error to do");
 		free_list(&command);
 		free_char_tab(envp);
 		exit(EXIT_FAILURE);
@@ -118,11 +117,11 @@ static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 			perror("waitpid error");
 			break ;
 		}
-		pipe->exit_val = wait_result;
 		data->index++;
 	}
-	printf("WHAT\n");
-	return (status);
+	if (data->builtin[data->index - 1] == 1)
+		return (pipe->exit_val);
+	return (WEXITSTATUS(status));
 }
 
 int	execute_test(t_cmd *pipe, char ***envp)
@@ -151,5 +150,5 @@ int	execute_test(t_cmd *pipe, char ***envp)
 	status = handle_waitpid(pipe, data);
 	printtestsignals(status);
 	free_struct_exec(data);
-	return (WEXITSTATUS(status));
+	return (status);
 }

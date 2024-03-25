@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:03:51 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 21:44:16 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 12:42:13 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_cmd
 	int				builtin;
 	char			*path_cmd;
 	int				exit_val;
+	int				last_exit_status;
 	int				var_env;
 	t_redir			*redir;
 	struct s_cmd	*next;

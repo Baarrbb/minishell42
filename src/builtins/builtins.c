@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/25 02:53:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 16:07:08 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*ourenv_wo_alloc(char *tofind, char **env)
 // 	return (0);
 // }
 
-void	our_pwd(void)
+int	our_pwd(void)
 {
 	char	cwd[1024];
 
@@ -72,6 +72,7 @@ void	our_pwd(void)
 		printf("%s\n", cwd);
 	else
 		printf("getcwd() error");
+	return (0);
 }
 
 static int	check_val_exit(char *cmd)
@@ -92,7 +93,7 @@ static int	check_val_exit(char *cmd)
 	return (0);
 }
 
-void	our_exit(t_cmd *everything, char **env, t_exec *data)
+int	our_exit(t_cmd *everything, char **env, t_exec *data)
 {
 	int	status;
 
@@ -110,7 +111,7 @@ void	our_exit(t_cmd *everything, char **env, t_exec *data)
 				if (everything->cmd[2])
 				{
 					printf("minishell: exit: too many arguments\n");
-					return ;
+					return (everything->last_exit_status);
 				}
 			}
 		}
@@ -137,25 +138,25 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 	redirections_out(cmd);
 	redirections_pipe_out(data);
 	if (!ft_strncmp(cmd->cmd[0], "echo", ft_strlen("echo")))
-		our_echo(cmd->cmd);
-	else if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen("cd")))
-		our_cd(cmd, env);
+		cmd->exit_val = our_echo(cmd->cmd);
+	else if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen("cd")) && data->numpipes == 1)
+		cmd->exit_val = our_cd(cmd, env);
 	else if (!ft_strncmp(cmd->cmd[0], "pwd", ft_strlen("pwd")))
-		our_pwd();
+		cmd->exit_val = our_pwd();
 	else if (!ft_strncmp(cmd->cmd[0], "export", ft_strlen("export")))
-		our_export(cmd, env);
+		cmd->exit_val = our_export(cmd, env);
 	else if (!ft_strncmp(cmd->cmd[0], "unset", ft_strlen("unset")))
-		our_unset(cmd->cmd, *env);
+		cmd->exit_val = our_unset(cmd->cmd, *env);
 	else if (!ft_strncmp(cmd->cmd[0], "env", ft_strlen("env")))
-		our_env(*env);
+		cmd->exit_val = our_env(*env);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
 	{
 		close(fdinsave);
 		close(fdoutsave);
-		our_exit(cmd, *env, data);
+		cmd->exit_val = our_exit(cmd, *env, data);
 	}
-	// close(fdinsave);
-	// close(fdoutsave);
 	dup2(fdoutsave, 1);
 	dup2(fdinsave, 0);
+	close(fdinsave);
+	close(fdoutsave);
 }

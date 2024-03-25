@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:05:23 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 23:38:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 12:10:02 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	good_flag(char *arguments)
 	return (0);
 }
 
-void	our_echo(char **cmds_args)
+int	our_echo(char **cmds_args)
 {
 	int	next_line;
 	int	i;
@@ -40,7 +40,7 @@ void	our_echo(char **cmds_args)
 	if (cmds_args[1] == NULL)
 	{
 		printf("\n");
-		return ;
+		return (0);
 	}
 	while (good_flag(cmds_args[i]) == 0)
 	{
@@ -56,4 +56,5 @@ void	our_echo(char **cmds_args)
 	}
 	if (next_line == 1)
 		printf("\n");
+	return (0);
 }

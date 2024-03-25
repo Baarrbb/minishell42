@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:46:44 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/23 17:51:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 12:08:09 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	our_env(char **env)
+int	our_env(char **env)
 {
 	int	i;
 
@@ -25,4 +25,5 @@ void	our_env(char **env)
 				printf("%s\n", env[i]);
 		}
 	}
+	return (0);
 }

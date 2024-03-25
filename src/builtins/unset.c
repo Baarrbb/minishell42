@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:05:39 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/23 19:23:57 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/25 12:07:45 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	remove_elem(char ***arr, int index)
 	(*arr)[i] = NULL;
 }
 
-void	our_unset(char **cmds, char **copy_env)
+int	our_unset(char **cmds, char **copy_env)
 {
 	int	i;
 	int	j;
@@ -46,4 +46,5 @@ void	our_unset(char **cmds, char **copy_env)
 		i++;
 	}
 	i = 0;
+	return (0);
 }

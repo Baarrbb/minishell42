@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:02:42 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/25 00:21:59 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 12:36:25 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	no_cmd_slash(t_cmd *command, char **envp)
 		free_char_tab(envp);
 		exit(EXIT_FAILURE);
 	}
-}
+}		
 
 static void	is_a_directory(t_cmd *command, char **envp)
 {
@@ -126,5 +126,4 @@ void	error_managing(t_cmd *command, char **envp)
 	no_such_file_or_directory(command, envp);
 	check_val_cmd(command, envp);
 	command_not_found(command, envp);
-	printf("there\n");
 }

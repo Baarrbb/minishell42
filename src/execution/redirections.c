@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:27:29 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/23 15:56:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 11:53:44 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,18 @@ void	redirections_in(t_cmd *cmd, t_exec *data)
 		fd = -1;
 		while (cmd->redir != NULL)
 		{
+			if (fd != -1 && fd > 2)
+			{
+				close(fd);
+				fd = -1;
+			}
 			if (cmd->redir->in)
 				fd = open(cmd->redir->filename, O_RDONLY);
 			else if (cmd->redir->in_read)
 				fd = heredoc(cmd, data);
 			cmd->redir = cmd->redir->next;
 		}
-		if (fd != -1)
+		if (fd > 2)
 		{
 			dup2(fd, 0);
 			close(fd);
