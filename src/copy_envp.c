@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:08:59 by bsuc              #+#    #+#             */
-/*   Updated: 2024/01/19 17:09:14 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/25 01:54:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,16 @@ static char	**copy_env_null(void)
 	char	pwd[PATH_MAX];
 
 	getcwd(pwd, PATH_MAX);
-	new_env = ft_calloc(4, sizeof(char *));
+	new_env = ft_calloc(5, sizeof(char *));
 	if (!new_env)
 		return (0);
-	new_env[0] = strjoin(new_env[0], "PWD=");
-	new_env[0] = strjoin(new_env[0], pwd);
+	new_env[0] = strjoin(new_env[0], "OLDPWD");
 	new_env[1] = strjoin(new_env[1], "SHLVL=");
 	new_env[1] = strjoin(new_env[1], "1");
 	new_env[2] = strjoin(new_env[2], "_=");
 	new_env[2] = strjoin(new_env[2], "./minishell");
+	new_env[3] = strjoin(new_env[3], "PWD=");
+	new_env[3] = strjoin(new_env[3], pwd);
 	return (new_env);
 }
 

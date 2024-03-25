@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 19:12:54 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 22:38:46 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 00:36:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	handle_quoting(t_cmd *quoting, char **env, int sortie)
 		{
 			str_sortie = ft_itoa(sortie);
 			if (handle_var(quoting, env, str_sortie) == 0)
-				return (0);
+				return (free(str_sortie), 0);
 			free(str_sortie);
 			remove_quotes(quoting);
 		}

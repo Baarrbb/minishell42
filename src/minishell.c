@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 21:20:38 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 01:36:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*parse_home(char *pwd, char **env)
 
 	parse_pwd = 0;
 	home = 0;
-	home = get_ourenv_wo_equal("HOME", env);
+	home = get_ourenv("HOME=", env, 0);
 	if (!home)
 		return (ft_strdup(pwd));
 	if (!ft_strncmp(pwd, home, ft_strlen(home)))
@@ -125,7 +125,7 @@ int	main(int ac, char **av, char **envp)
 			g_sigint_received = 0;
 		}
 		check_line(line, &pipe, cpy_env);
-		print_linked_list(pipe);
+		// print_linked_list(pipe);
 		free(prompt);
 		if (pipe)
 		{

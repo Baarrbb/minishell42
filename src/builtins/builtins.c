@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 18:22:22 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 02:53:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,48 @@ char	*ourenv_wo_alloc(char *tofind, char **env)
 		i = -1;
 		while (env[++i])
 		{
-			if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
-				return (env[i] + ft_strlen(tofind) + 1);
+			if (ft_strchr(env[i], '='))
+			{
+				if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
+				{
+					return (env[i] + ft_strlen(tofind) + 1);
+				}
+			}
+			
 		}
 	}
 	return (0);
 }
 
-char	*get_ourenv_wo_equal(char *tofind, char **env)
-{
-	int	i;
-
-	if (env)
-	{
-		i = -1;
-		while (env[++i])
-		{
-			if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
-				return (ft_strdup(env[i] + ft_strlen(tofind) + 1));
-		}
-	}
-	return (0);
-}
+// char	*get_ourenv_wo_equal(char *tofind, char **env)
+// {
+// 	int		i;
+// 	char	*ret;
+// 	char	c;
+// 	if (env)
+// 	{
+// 		i = -1;
+// 		while (env[++i])
+// 		{
+// 			if (!ft_strncmp(env[i], tofind, ft_strlen(tofind)))
+// 			{
+// 				if (env[i] + ft_strlen(tofind) + 1)
+// 				{
+// 					c = *(env[i] + ft_strlen(tofind) + 1);
+// 					if (c != '\0')
+// 					{
+// 						ret = ft_strdup(env[i] + ft_strlen(tofind) + 1);
+// 						if (ret && ret[0])
+// 							return (ft_strdup(ret));
+// 					}
+// 				}
+// 				else
+// 					return (NULL);
+// 			}
+// 		}
+// 	}
+// 	return (0);
+// }
 
 void	our_pwd(void)
 {
@@ -54,6 +74,24 @@ void	our_pwd(void)
 		printf("getcwd() error");
 }
 
+static int	check_val_exit(char *cmd)
+{
+	int	i;
+
+	i = -1;
+	while (cmd[++i])
+	{
+		if (i == 0 && (cmd[0] == '-' || cmd[0] == '+'))
+			continue ;
+		if (!ft_isdigit(cmd[i]))
+		{
+			printf("minishell: exit: %s: numeric argument required\n", cmd);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	our_exit(t_cmd *everything, char **env, t_exec *data)
 {
 	int	status;
@@ -61,14 +99,19 @@ void	our_exit(t_cmd *everything, char **env, t_exec *data)
 	status = EXIT_SUCCESS;
 	if (everything)
 	{
+		printf("exit\n");
 		if (everything->cmd[1])
 		{
-			status = ft_atoi(everything->cmd[1]) % 256;
-			if (everything->cmd[2])
+			if (check_val_exit(everything->cmd[1]))
+				status = 2;
+			else
 			{
-				status = 127;
-				printf("exit\nbash: exit: too many arguments\n");
-				return ;
+				status = ft_atoi(everything->cmd[1]) % 256;
+				if (everything->cmd[2])
+				{
+					printf("minishell: exit: too many arguments\n");
+					return ;
+				}
 			}
 		}
 		free_list(&everything);

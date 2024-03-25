@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:23:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 17:47:13 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 02:22:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	ret_cd(int ret, char ***env, char *oldpwd, char *path)
 	{
 		printf("%serror retrieving current directory: getcwd: cannot "
 			"access parent directories: %s\n", ERROR_CD, strerror(errno));
-		err_pwd = get_ourenv_wo_equal("OLDPWD", *env);
+		err_pwd = get_ourenv("OLDPWD=", *env, 0);
 		if (err_pwd)
 		{
 			chdir(err_pwd);
@@ -66,9 +66,10 @@ static int	move_cd(char *path, char ***env, char *oldpwd)
 	int		ret;
 
 	ret = 1;
-	if (!path || !ft_strncmp(path, "--\0", 3) || !ft_strncmp(path, "~\0", 2))
+	if (!path || !ft_strncmp(path, "--\0", 3) || !ft_strncmp(path, "~\0", 2)
+		|| !ft_strncmp(path, "~/\0", 3))
 	{
-		if (ourenv_wo_alloc("HOME", *env))
+		if (ourenv_wo_alloc("HOME=", *env))
 			ret = chdir(ourenv_wo_alloc("HOME", *env));
 		else
 			printf("%sHOME not set\n", ERROR_CD);
@@ -107,12 +108,13 @@ int	our_cd(t_cmd *cmd, char ***env)
 	if (nb_args > 2)
 		return (printf("%stoo many arguments\n", ERROR_CD), 1);
 	arg = cmd->cmd[1];
-	oldpwd = get_ourenv_wo_equal("PWD", *env);
+	oldpwd = get_ourenv("PWD=", *env, 0);
 	if (!oldpwd && getcwd(oldpwd_fail, PATH_MAX))
 		ret = move_cd(arg, env, oldpwd_fail);
 	else
 		ret = move_cd(arg, env, oldpwd);
 	printf("retour %d\n", ret);
-	free(oldpwd);
+	if (oldpwd)
+		free(oldpwd);
 	return (ret);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_var_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsuc <bsuc@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:54:00 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/01/24 18:19:27 by bsuc             ###   ########.fr       */
+/*   Updated: 2024/03/24 23:55:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ char	*get_ourenv(char *tofind, char **ourenv, char *sortie)
 		}
 	}
 	if (ft_strncmp(tofind, "?=\0", ft_strlen(tofind) + 1) == 0)
-		return (sortie);
+	{
+		return (ft_strdup(sortie));
+	}
 	return (NULL);
 }
 

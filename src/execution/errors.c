@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:02:42 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 17:43:19 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 00:21:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,15 @@ static void	command_not_found(t_cmd *command, char **envp)
 	int		i;
 	char	*full_cmd;
 
+	if (!command->path)
+	{
+		ft_putstr_fd(command->cmd[0], 2);
+		// ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		free_list(&command);
+		free_char_tab(envp);
+		exit(127);
+	}
 	i = -1;
 	while (command->path[++i])
 	{

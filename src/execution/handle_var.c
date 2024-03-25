@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 16:54:21 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/24 22:31:15 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 00:37:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ static char	*replace_dollar(char *str, int pos, char **our_envp, char *sortie)
 	if (result != NULL)
 	{
 		str = replace_by_env(str, result, (i - pos), ft_strlen(result));
+		free(result);
+	}
+	else if (!ft_strncmp(result, "PWD", ft_strlen(result)))
+	{
+		free(str);
+		str = 0;
+		str = ft_strdup("");
 		free(result);
 	}
 	else

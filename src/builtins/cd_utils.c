@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:38:44 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/24 17:38:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 02:21:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	put_old(char ***env, char *oldpwd)
 	line = strjoin(0, "OLDPWD=");
 	if (oldpwd)
 		line = strjoin(line, oldpwd);
-	free(oldpwd);
 	put_var(env, line, 0);
 	free(line);
 }

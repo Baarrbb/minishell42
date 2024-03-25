@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:32:20 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/24 21:56:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/25 02:20:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int	our_export(t_cmd *cmd, char ***env)
 			put_var(env, wo_add, 1);
 			free(wo_add);
 		}
-		else if (cmd->var_env && !check_already_in(cmd->cmd[i], *env))
+		else if (cmd->var_env && !check_already_in(cmd->cmd[i], *env) && !ft_strchr(cmd->cmd[i], '='))
 			print_export_alpha(*env, get_size(*env));
 		else
 			put_var(env, cmd->cmd[i], 0);
