@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/26 16:47:17 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:16:50 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,27 +120,16 @@ int	our_exit(t_cmd *everything, char **env, t_exec *data)
 	free_char_tab(env);
 	if (data)
 	{
-		printf("tet\n");
 		close_all_pipes(data->numpipes, data->pipefds);
 		free_struct_exec(data);
 	}
 	exit(status);
 }
-
-void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
+void	command_exec(t_cmd *cmd, char ***env, t_exec *data, int *fdsave)
 {
-	int	fdinsave;
-	int	fdoutsave;
-
-	fdinsave = dup(0);
-	fdoutsave = dup(1);
-	redirections_pipe_in(cmd, data);
-	redirections_in(cmd, data);
-	redirections_out(cmd);
-	redirections_pipe_out(data);
 	if (!ft_strncmp(cmd->cmd[0], "echo", ft_strlen("echo")))
 		cmd->exit_val = our_echo(cmd->cmd);
-	else if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen("cd")) && data->numpipes == 1)
+	else if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen("cd")))
 		cmd->exit_val = our_cd(cmd, env);
 	else if (!ft_strncmp(cmd->cmd[0], "pwd", ft_strlen("pwd")))
 		cmd->exit_val = our_pwd();
@@ -152,12 +141,25 @@ void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
 		cmd->exit_val = our_env(*env);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", ft_strlen("exit")))
 	{
-		close(fdinsave);
-		close(fdoutsave);
+		close(fdsave[0]);
+		close(fdsave[1]);
 		cmd->exit_val = our_exit(cmd, *env, data);
 	}
-	dup2(fdoutsave, 1);
-	dup2(fdinsave, 0);
-	close(fdinsave);
-	close(fdoutsave);
+}
+
+void	builtingo(t_cmd *cmd, char ***env, t_exec *data)
+{
+	int	fdsave[2];
+
+	fdsave[0] = dup(0);
+	fdsave[1] = dup(1);
+	redirections_pipe_in(cmd, data);
+	redirections_in(cmd, data);
+	redirections_out(cmd);
+	redirections_pipe_out(data);
+	command_exec(cmd, env, data, fdsave);
+	dup2(fdsave[1], 1);
+	dup2(fdsave[0], 0);
+	close(fdsave[1]);
+	close(fdsave[0]);
 }

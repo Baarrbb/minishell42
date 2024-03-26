@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/26 16:30:52 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:30:50 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ void	free_struct_exec(t_exec *data)
 	free(data);
 }
 
-void	exec_utils(t_cmd *command, t_exec *data, char ***envp)
+void	exec_utils(t_cmd *command, t_exec *data, char ***envp, t_cmd *start)
 {
+	int	i;
+
+	i = 0;
 	sig_default();
 	redirections_pipe_in(command, data);
 	redirections_in(command, data);
@@ -81,8 +84,12 @@ void	exec_utils(t_cmd *command, t_exec *data, char ***envp)
 	data = 0;
 	if (command->builtin == 1)
 	{
+		ft_putstr_fd("test\n", 2);
 		builtinpipe(command, envp, data);
-		exit(command->exit_val);
+		i = command->exit_val;
+		free_list(&start);
+		free_char_tab(*envp);
+		exit(i);
 	}
 }
 
@@ -91,7 +98,7 @@ static void	exec(t_cmd *command, t_exec *data, char **envp, t_cmd *start)
 	data->pid[data->index] = fork();
 	if (data->pid[data->index] == 0)
 	{
-		exec_utils(command, data, &envp);
+		exec_utils(command, data, &envp, start);
 		error_managing(command, envp, start);
 		if (execve(command->path_cmd, command->cmd, envp) < 0)
 		{

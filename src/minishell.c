@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/26 16:46:41 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:30:05 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,8 @@ int	main(int ac, char **av, char **envp)
 			if (handle_quoting(pipe, cpy_env, sortie) == 0)
 				return (printf("Error\n"), 0);
 			check_commands(pipe);
-			if (check_redirs(*pipe, &sortie) == 1)
-				sortie = execute_test(pipe, &cpy_env);
+		//	if (check_redirs(*pipe, &sortie) == 1)
+			sortie = execute_test(pipe, &cpy_env);
 			printf("sortie : %d\n", sortie);
 			if (sortie == -1)
 				return (printf("Error\n"), 0);
