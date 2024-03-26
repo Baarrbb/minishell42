@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:37:27 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/25 16:07:08 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:47:17 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int	our_exit(t_cmd *everything, char **env, t_exec *data)
 	free_char_tab(env);
 	if (data)
 	{
+		printf("tet\n");
 		close_all_pipes(data->numpipes, data->pipefds);
 		free_struct_exec(data);
 	}

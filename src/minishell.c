@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:07:33 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/25 17:45:23 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:46:41 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	main(int ac, char **av, char **envp)
 	struct sigaction	sa;
 	struct sigaction	sb;
 	int					sortie;
+	int					old_sortie;
 
 	(void)av;
 	if (ac != 1)
@@ -110,6 +111,7 @@ int	main(int ac, char **av, char **envp)
 	sigemptyset(&sb.sa_mask);
 	while (1)
 	{
+		old_sortie = sortie;
 		sigaction(SIGINT, &sa, NULL);
 		signal(SIGQUIT, SIG_IGN);
 		prompt = display_prompt(cpy_env);
@@ -125,14 +127,16 @@ int	main(int ac, char **av, char **envp)
 			g_sigint_received = 0;
 		}
 		check_line(line, &pipe, cpy_env);
-		// print_linked_list(pipe);
+		//print_linked_list(pipe);
+		print_struct(pipe);
 		free(prompt);
 		if (pipe)
 		{
 			if (handle_quoting(pipe, cpy_env, sortie) == 0)
 				return (printf("Error\n"), 0);
 			check_commands(pipe);
-			sortie = execute_test(pipe, &cpy_env);
+			if (check_redirs(*pipe, &sortie) == 1)
+				sortie = execute_test(pipe, &cpy_env);
 			printf("sortie : %d\n", sortie);
 			if (sortie == -1)
 				return (printf("Error\n"), 0);

@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/25 17:21:19 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:30:52 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,29 @@ void	free_struct_exec(t_exec *data)
 	free(data);
 }
 
+void	exec_utils(t_cmd *command, t_exec *data, char ***envp)
+{
+	sig_default();
+	redirections_pipe_in(command, data);
+	redirections_in(command, data);
+	redirections_out(command);
+	redirections_pipe_out(data);
+	close_all_pipes(data->numpipes, data->pipefds);
+	free_struct_exec(data);
+	data = 0;
+	if (command->builtin == 1)
+	{
+		builtinpipe(command, envp, data);
+		exit(command->exit_val);
+	}
+}
+
 static void	exec(t_cmd *command, t_exec *data, char **envp, t_cmd *start)
 {
 	data->pid[data->index] = fork();
 	if (data->pid[data->index] == 0)
 	{
-		sig_default();
-		redirections_pipe_in(command, data);
-		redirections_in(command, data);
-		redirections_out(command);
-		redirections_pipe_out(data);
-		close_all_pipes(data->numpipes, data->pipefds);
-		free_struct_exec(data);
-		//close(0);
+		exec_utils(command, data, &envp);
 		error_managing(command, envp, start);
 		if (execve(command->path_cmd, command->cmd, envp) < 0)
 		{
@@ -110,7 +120,7 @@ static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 	data->index = 0;
 	while (data->index < data->numpipes)
 	{
-		if (data->builtin[data->index] == 0)
+		if (data->builtin[data->index] == 0 || data->numpipes > 1)
 			wait_result = waitpid(data->pid[data->index], &status, 0);
 		if (wait_result == -1)
 		{
@@ -119,7 +129,7 @@ static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 		}
 		data->index++;
 	}
-	if (data->builtin[data->index - 1] == 1)
+	if (data->builtin[data->index - 1] == 1 && data->numpipes <= 1)
 		return (pipe->exit_val);
 	return (WEXITSTATUS(status));
 }
@@ -140,7 +150,7 @@ int	execute_test(t_cmd *pipe, char ***envp)
 	while (command)
 	{
 		sig_ignore();
-		if (command->builtin)
+		if (command->builtin && data->numpipes <= 1)
 			builtingo(command, envp, data);
 		else
 			exec(command, data, *envp, start);

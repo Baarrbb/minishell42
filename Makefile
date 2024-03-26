@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/29 23:25:19 by bsuc              #+#    #+#              #
-#    Updated: 2024/03/25 01:57:39 by marvin           ###   ########.fr        #
+#    Updated: 2024/03/26 16:04:44 by ytouihar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ SRC_EXEC = $(EXEC_DIR)/checks_comms.c \
 	$(EXEC_DIR)/pipes.c \
 	$(EXEC_DIR)/quote_removing.c \
 	$(EXEC_DIR)/redirections.c \
-	$(EXEC_DIR)/signals.c
+	$(EXEC_DIR)/signals.c \
+	$(EXEC_DIR)/builtinpipe.c
 
 SRC = $(SRC_MAIN) \
 	$(SRC_PARS) \
