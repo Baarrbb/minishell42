@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:14:45 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/26 16:46:33 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/28 13:00:52 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int		handle_var(t_cmd *cmd, char **our_envp, char *sortie);
 
 /*redirections :*/
 int		check_redirs(t_cmd cmd, int *sortie);
-void	redirections_pipe_in(t_cmd *command, t_exec *data);
+void	redirections_pipe_in(t_cmd *command, t_exec *data, int fd);
 int		redirections_in(t_cmd *cmd, t_exec *data);
-void	redirections_pipe_out(t_exec *data);
+void	redirections_pipe_out(t_exec *data, int fd);
 int		redirections_out(t_cmd *cmd);
 /*pipes opening and closing*/
 void	close_all_pipes(int numPipes, int *pipefds);
@@ -54,5 +54,8 @@ void	sig_default(void);
 void	printtestsignals(int status);
 /*builtinpipe*/
 void	builtinpipe(t_cmd *cmd, char ***env, t_exec *data);
+/*redirections_utils.c*/
+void	open_file_out(t_redir *redir, int *fd);
+void	open_file_in(t_cmd *cmd, t_exec *data, int *fd);
 
 #endif

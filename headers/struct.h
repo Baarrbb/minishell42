@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:03:51 by bsuc              #+#    #+#             */
-/*   Updated: 2024/03/25 12:42:13 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/28 13:09:45 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_cmd
 	int				exit_val;
 	int				last_exit_status;
 	int				var_env;
+	int				fdinopen;
+	int				fdoutopen;
 	t_redir			*redir;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -47,5 +49,12 @@ typedef struct s_exec
 	int		fd;
 	int		pipeindex;
 }	t_exec;
+
+typedef struct s_heredoc
+{
+	char	*delimiter;
+	int		pipe[2];
+	pid_t	pid;
+}	t_heredoc;
 
 #endif

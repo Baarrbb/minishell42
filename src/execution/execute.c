@@ -6,11 +6,13 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:53:56 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/26 19:30:50 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:47:29 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern volatile sig_atomic_t	g_sigint_received;
 
 void	fill_builtins(t_exec *data, t_cmd *command)
 {
@@ -72,19 +74,20 @@ void	free_struct_exec(t_exec *data)
 void	exec_utils(t_cmd *command, t_exec *data, char ***envp, t_cmd *start)
 {
 	int	i;
+	int	fd;
+	int	fd_out;
 
 	i = 0;
 	sig_default();
-	redirections_pipe_in(command, data);
-	redirections_in(command, data);
-	redirections_out(command);
-	redirections_pipe_out(data);
+	command->fdinopen = redirections_in(command, data);
+	redirections_pipe_in(command, data, command->fdinopen);
+	command->fdoutopen = redirections_out(command);
+	redirections_pipe_out(data, command->fdoutopen);
 	close_all_pipes(data->numpipes, data->pipefds);
 	free_struct_exec(data);
 	data = 0;
 	if (command->builtin == 1)
 	{
-		ft_putstr_fd("test\n", 2);
 		builtinpipe(command, envp, data);
 		i = command->exit_val;
 		free_list(&start);
@@ -134,6 +137,9 @@ static int	handle_waitpid(t_cmd *pipe, t_exec *data)
 			perror("waitpid error");
 			break ;
 		}
+		if (WIFSIGNALED(status))
+			if (WTERMSIG(status) == SIGINT)
+				return (130);
 		data->index++;
 	}
 	if (data->builtin[data->index - 1] == 1 && data->numpipes <= 1)

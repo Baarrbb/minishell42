@@ -6,7 +6,7 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:02:42 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/26 15:05:21 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:53:47 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,12 @@ void	error_managing(t_cmd *command, char **envp, t_cmd *start)
 {
 	if (command->cmd == NULL)
 	{
+		if (command->fdinopen != -1)
+			close(command->fdinopen);
+		if (command->fdoutopen != -1)
+			close(command->fdoutopen);
 		free_list(&start);
+		free_char_tab(envp);
 		exit(1);
 	}
 	no_cmd_slash(command, envp, start);

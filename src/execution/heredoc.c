@@ -6,60 +6,71 @@
 /*   By: ytouihar <ytouihar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 19:40:10 by ytouihar          #+#    #+#             */
-/*   Updated: 2024/03/21 10:55:55 by ytouihar         ###   ########.fr       */
+/*   Updated: 2024/03/28 13:10:46 by ytouihar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	reading_heredoc(int *pipeheredoc, char *delimiter)
+void	free_heredoc(t_exec *data, t_cmd **cmd, char **envp)
+{
+	free_struct_exec(data);
+	free_list(cmd);
+	free_char_tab(envp);
+}
+
+static void	reading_heredoc(t_heredoc hd)
 {
 	char	*line;
 
-	close(pipeheredoc[0]);
+	close(hd.pipe[0]);
 	while (1)
 	{
-		line = readline("testheredoc : ");
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		line = readline("testhd : ");
+		if (line == NULL)
 		{
-			if (line[ft_strlen(delimiter)] == '\0')
+			printf("ctrld ou bug\n");
+			break ;
+		}
+		if (ft_strncmp(line, hd.delimiter, ft_strlen(hd.delimiter)) == 0)
+		{
+			if (line[ft_strlen(hd.delimiter)] == '\0')
 			{
 				free(line);
 				break ;
 			}
 		}
-		write(pipeheredoc[1], line, ft_strlen(line));
-		write(pipeheredoc[1], "\n", 1);
+		write(hd.pipe[1], line, ft_strlen(line));
+		write(hd.pipe[1], "\n", 1);
 	}
-	close(pipeheredoc[1]);
+	close(hd.pipe[1]);
+	//free_heredoc(data, cmd, envp);
 	exit(0);
 }
 
 int	heredoc(t_cmd *test, t_exec *data)
 {
-	int		pipeheredoc[2];
-	char	*delimiter;
-	pid_t	pid;
+	t_heredoc	heredoc;
 	int		status;
 
-	delimiter = test->redir->filename;
-	signal(SIGQUIT, SIG_IGN);
-	if (pipe(pipeheredoc) < 0)
+	heredoc.delimiter = test->redir->filename;
+	if (pipe(heredoc.pipe) < 0)
 	{
-		perror("fail pipe");
-		return (0);
+		perror("fail pipe heredoc");
+		return (-1);
 	}
-	pid = fork();
-	if (pid == 0)
+	heredoc.pid = fork();
+	if (heredoc.pid == 0)
 	{
+		sig_default();
 		close_all_pipes(data->numpipes, data->pipefds);
-		reading_heredoc(pipeheredoc, delimiter);
+		reading_heredoc(heredoc);
 	}
-	if (pid > 0)
+	if (heredoc.pid > 0)
 	{
-		close(pipeheredoc[1]);
-		waitpid(pid, &status, 0);
-		return (pipeheredoc[0]);
+		close(heredoc.pipe[1]);
+		waitpid(heredoc.pid, &status, 0);
+		return (heredoc.pipe[0]);
 	}
-	return (0);
+	return (-1);
 }
